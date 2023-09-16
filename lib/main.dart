@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remind_me/reminder_screen.dart';
 import 'package:remind_me/styles/app_colors.dart';
+import 'package:remind_me/styles/themes.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const MyApp());
 }
+
+GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,12 +29,18 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       child: MaterialApp(
         title: 'RemindMe',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primaryColor,
-          ),
-          useMaterial3: true,
+        navigatorKey: navKey,
+        builder: (context, child) => Overlay(
+          initialEntries: [
+            if (child != null) ...[
+              OverlayEntry(
+                builder: (context) => child,
+              ),
+            ],
+          ],
         ),
+        debugShowCheckedModeBanner: false,
+        theme: theme,
         home: const ReminderScreen(),
       ),
     );

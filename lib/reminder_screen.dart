@@ -5,10 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:remind_me/data/reminder_priority_enum.dart';
+import 'package:remind_me/repository/database_helper.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/styles.dart';
 import 'package:remind_me/widgets/general_textfield.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import 'repository/database_repository.dart';
+import 'utils/general_toast.dart';
 
 class ReminderScreen extends StatefulWidget {
   const ReminderScreen({Key? key}) : super(key: key);
@@ -48,16 +52,9 @@ class ReminderScreenState extends State<ReminderScreen> {
     return mySelectedEvents[dateTime] ?? [];
   }
 
-  _onAddReminder() {
+  _onAddReminder() async {
     if (titleController.text.isEmpty && descpController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter title & description'),
-          duration: Duration(seconds: 3),
-        ),
-      );
-      //Navigator.pop(context);
-      return;
+        GeneralToast.showToast("Please enter title & description");
     } else {
       if (mySelectedEvents[selectedCalendarDate] != null) {
         mySelectedEvents[selectedCalendarDate]?.add(ReminderModel(
@@ -72,19 +69,17 @@ class ReminderScreenState extends State<ReminderScreen> {
               priority: currentPriority)
         ];
       }
+
+      await DatabaseRepository.addReminders(mySelectedEvents);
       log(mySelectedEvents.toString());
       setState(() {});
 
       titleController.clear();
       descpController.clear();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Reminder successfully added.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      Navigator.pop(context);
-      return;
+      GeneralToast.showToast("Reminder successfully added.");
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 

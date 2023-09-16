@@ -1,21 +1,21 @@
 import 'package:remind_me/data/keys_data.dart';
-import 'package:remind_me/repository/database_helper_repository.dart';
+import 'package:remind_me/repository/database_helper.dart';
 
 class DatabaseRepository {
-  Future<Map?> getReminders() async {
-    final Map? reminderData = await DatabaseHelperRepository()
-        .getBoxItem(key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId);
+ static Future<Map?> getReminders() async {
+    final Map? reminderData = await DatabaseHelper.getBoxItem(
+        key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId);
 
     return reminderData;
   }
 
-  Future<void> addReminders(Map data) async {
-    await DatabaseHelperRepository().addBoxItem(
+ static Future<void> addReminders(Map data) async {
+    await DatabaseHelper.addBoxItem(
         key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId, value: data);
   }
 
-  Future<void> deleteAllReminders() async {
-    await DatabaseHelperRepository()
-        .deleteBoxItem(key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId);
+ static Future<void> deleteAllReminders() async {
+    await DatabaseHelper.deleteBoxItem(
+        key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId);
   }
 }
