@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:remind_me/data/reminder_priority_enum.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/styles.dart';
-import 'package:remind_me/widgets/general_text_button.dart';
 import 'package:remind_me/widgets/general_textfield.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -26,8 +26,9 @@ class ReminderScreenState extends State<ReminderScreen> {
   final titleController = TextEditingController();
   final dateInput = TextEditingController();
   final descpController = TextEditingController();
+  final currentPriority = PriorityEnum.normal;
   final Color bgColor = const Color(0xffF09290);
-  late Map<DateTime, List<MyEvents>> mySelectedEvents;
+  late Map<DateTime, List<ReminderModel>> mySelectedEvents;
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class ReminderScreenState extends State<ReminderScreen> {
     super.dispose();
   }
 
-  List<MyEvents> _listOfDayEvents(DateTime dateTime) {
+  List<ReminderModel> _listOfDayEvents(DateTime dateTime) {
     return mySelectedEvents[dateTime] ?? [];
   }
 
@@ -59,14 +60,16 @@ class ReminderScreenState extends State<ReminderScreen> {
       return;
     } else {
       if (mySelectedEvents[selectedCalendarDate] != null) {
-        mySelectedEvents[selectedCalendarDate]?.add(MyEvents(
-            eventTitle: titleController.text,
-            eventDescp: descpController.text));
+        mySelectedEvents[selectedCalendarDate]?.add(ReminderModel(
+            title: titleController.text,
+            descp: descpController.text,
+            priority: currentPriority));
       } else {
         mySelectedEvents[selectedCalendarDate!] = [
-          MyEvents(
-              eventTitle: titleController.text,
-              eventDescp: descpController.text)
+          ReminderModel(
+              title: titleController.text,
+              descp: descpController.text,
+              priority: currentPriority)
         ];
       }
       log(mySelectedEvents.toString());
@@ -100,10 +103,10 @@ class ReminderScreenState extends State<ReminderScreen> {
       log(formattedDate); //formatted date output using intl package =>  2021-03-16
 
       selectedCalendarDate =
-          DateTime.parse(pickedDate.toString().substring(0, 10))
+          DateTime.parse(DateTime.parse(pickedDate.toString().substring(0, 10))
               .toString()
-              .replaceAll("000", "00Z") as DateTime;
-
+              .replaceAll("000", "00Z"));
+      log(selectedCalendarDate.toString());
       dateInput.text = formattedDate; //set output date to TextField value.
     } else {}
   }
@@ -346,9 +349,9 @@ class ReminderScreenState extends State<ReminderScreen> {
                               contentPadding: EdgeInsets.zero,
                               title: Padding(
                                 padding: EdgeInsets.only(bottom: 8.h),
-                                child: Text(myEvents.eventTitle),
+                                child: Text(myEvents.title),
                               ),
-                              subtitle: Text(myEvents.eventDescp),
+                              subtitle: Text(myEvents.descp),
                             ),
                           )
                         ],
@@ -362,12 +365,17 @@ class ReminderScreenState extends State<ReminderScreen> {
   }
 }
 
-class MyEvents {
-  final String eventTitle;
-  final String eventDescp;
+class ReminderModel {
+  final String title;
+  final String descp;
+  final PriorityEnum priority;
 
-  MyEvents({required this.eventTitle, required this.eventDescp});
+  ReminderModel({
+    required this.title,
+    required this.descp,
+    required this.priority,
+  });
 
   @override
-  String toString() => eventTitle;
+  String toString() => title;
 }
