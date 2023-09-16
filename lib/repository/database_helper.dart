@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:hive/hive.dart';
+import 'package:remind_me/models/reminder_model.dart';
 
 class DatabaseHelper {
   static deleteBoxItem({required String key, required String boxId}) async {
@@ -14,9 +17,12 @@ class DatabaseHelper {
     box.put(key, value);
   }
 
-  static dynamic getBoxItem(
+  static getBoxItem(
       {required String key, required String boxId}) async {
     var box = await Hive.openBox(boxId);
+        log(box.get(key, defaultValue: null).toString());
     return box.get(key, defaultValue: null);
   }
+
+  
 }
