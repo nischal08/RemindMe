@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remind_me/reminder_screen.dart';
-import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/themes.dart';
 
 void main() async {

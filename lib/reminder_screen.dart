@@ -1,16 +1,14 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:remind_me/data/reminder_priority_enum.dart';
-import 'package:remind_me/repository/database_helper.dart';
+import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/styles.dart';
 import 'package:remind_me/widgets/general_textfield.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'data/enum/reminder_priority_enum.dart';
 import 'repository/database_repository.dart';
 import 'utils/general_toast.dart';
 
@@ -54,7 +52,7 @@ class ReminderScreenState extends State<ReminderScreen> {
 
   _onAddReminder() async {
     if (titleController.text.isEmpty && descpController.text.isEmpty) {
-        GeneralToast.showToast("Please enter title & description");
+      GeneralToast.showToast("Please enter title & description");
     } else {
       if (mySelectedEvents[selectedCalendarDate] != null) {
         mySelectedEvents[selectedCalendarDate]?.add(ReminderModel(
@@ -358,19 +356,4 @@ class ReminderScreenState extends State<ReminderScreen> {
       ),
     );
   }
-}
-
-class ReminderModel {
-  final String title;
-  final String descp;
-  final PriorityEnum priority;
-
-  ReminderModel({
-    required this.title,
-    required this.descp,
-    required this.priority,
-  });
-
-  @override
-  String toString() => title;
 }
