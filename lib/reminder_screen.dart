@@ -28,7 +28,7 @@ class ReminderScreenState extends State<ReminderScreen> {
   DateTime _focusedCalendarDate = DateTime.now();
   final _initialCalendarDate = DateTime(2022);
   final _lastCalendarDate = DateTime(3000);
-  DateTime? selectedCalendarDate;
+  late DateTime selectedCalendarDate;
   final titleController = TextEditingController();
   final dateInput = TextEditingController();
   final descpController = TextEditingController();
@@ -69,7 +69,7 @@ class ReminderScreenState extends State<ReminderScreen> {
     } else {
       _convertSelectedDateToTzDate();
       BlocProvider.of<ReminderBloc>(context).add(AddReminderEvent(
-          selectedCalendarDate!,
+          selectedCalendarDate,
           reminder: ReminderModel(
               title: titleController.text,
               descp: descpController.text,
@@ -87,7 +87,7 @@ class ReminderScreenState extends State<ReminderScreen> {
   _showDatePicker() async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
-        initialDate: selectedCalendarDate!,
+        initialDate: selectedCalendarDate,
         firstDate: DateTime.now(),
         lastDate: _lastCalendarDate);
 
@@ -99,7 +99,7 @@ class ReminderScreenState extends State<ReminderScreen> {
   }
 
   _showAddEventDialog() async {
-    dateInput.text = DateFormat('yyyy-MM-dd').format(selectedCalendarDate!);
+    dateInput.text = DateFormat('yyyy-MM-dd').format(selectedCalendarDate);
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -295,7 +295,7 @@ class ReminderScreenState extends State<ReminderScreen> {
                     // as per the documentation 'selectedDayPredicate' needs to determine
                     // current selected day
                     return (isSameDay(
-                        selectedCalendarDate!, currentSelectedDate));
+                        selectedCalendarDate, currentSelectedDate));
                   },
                   availableGestures: AvailableGestures.all,
 
@@ -321,7 +321,7 @@ class ReminderScreenState extends State<ReminderScreen> {
                       color: Colors.white,
                     ),
                     child: SingleChildScrollView(
-                      child: (_listOfDayEvents(selectedCalendarDate!).isEmpty)
+                      child: (_listOfDayEvents(selectedCalendarDate).isEmpty)
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -332,7 +332,7 @@ class ReminderScreenState extends State<ReminderScreen> {
                                     "assets/images/no reminder.svg",
                                     height: 200),
                                 Text(
-                                  "No reminder for ${DateFormat.yMMMEd().format(selectedCalendarDate!)}",
+                                  "No reminder for ${DateFormat.yMMMEd().format(selectedCalendarDate)}",
                                   style: subTitleText.copyWith(
                                     color: AppColors.textLightGreyColor,
                                   ),
@@ -348,16 +348,17 @@ class ReminderScreenState extends State<ReminderScreen> {
                               children: [
                                 Text(
                                   DateFormat.yMMMMEEEEd()
-                                      .format(selectedCalendarDate!),
+                                      .format(selectedCalendarDate),
                                   style: smallText.copyWith(
                                       color: Colors.grey.shade500),
                                 ),
                                 SizedBox(
                                   height: 16.h,
                                 ),
-                                ..._listOfDayEvents(selectedCalendarDate!).map(
-                                  (myEvents) =>
-                                      ReminderItem(reminder: myEvents),
+                                ..._listOfDayEvents(selectedCalendarDate).map(
+                                  (myEvents) => ReminderItem(
+                                      selectedCalendarDate,
+                                      reminder: myEvents),
                                 )
                               ],
                             ),
@@ -376,7 +377,7 @@ class ReminderScreenState extends State<ReminderScreen> {
 }
 
 _showDeleteConfirmation(context) async {
- return await showDialog(
+  return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
             title: Text(
@@ -408,7 +409,9 @@ _showDeleteConfirmation(context) async {
 
 class ReminderItem extends StatelessWidget {
   final ReminderModel reminder;
-  const ReminderItem({
+  final DateTime selectedCalendarDate;
+  const ReminderItem(
+    this.selectedCalendarDate, {
     super.key,
     required this.reminder,
   });
@@ -418,7 +421,10 @@ class ReminderItem extends StatelessWidget {
     return Dismissible(
       key: Key(reminder.toString()),
       onDismissed: (direction) {
-        
+        log(selectedCalendarDate.toString(),name: "Dissmible");
+        context
+            .read<ReminderBloc>()
+            .add(DeleteReminderEvent(selectedCalendarDate, reminder: reminder));
         GeneralToast.showToast('${reminder.title} reminder deleted.');
       },
       direction: DismissDirection.endToStart,

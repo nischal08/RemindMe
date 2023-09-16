@@ -10,7 +10,6 @@ class ReminderBloc extends Bloc<ReminderEvent,
   ReminderBloc() : super(AppResponse.loading({})) {
     on<AddReminderEvent>(
       (event, emit) async {
-        emit(AppResponse.loading({}));
         if (state.data![event.selectedCalendarDate] != null) {
           state.data![event.selectedCalendarDate]?.add(event.reminder);
         } else {
@@ -24,9 +23,26 @@ class ReminderBloc extends Bloc<ReminderEvent,
         });
       },
     );
+
+    on<DeleteReminderEvent>(
+      (event, emit) async {
+        emit(AppResponse.loading(state.data));
+        if (state.data![event.selectedCalendarDate]!.length == 1) {
+          state.data!.remove(event.selectedCalendarDate);
+        } else {
+          state.data![event.selectedCalendarDate]!.remove(event.reminder);
+        }
+        DatabaseRepository.addReminders(state.data!).then((value) {
+          emit(AppResponse.completed(state.data));
+        }).onError((error, stackTrace) {
+          log(error.toString());
+          emit(AppResponse.error(error.toString()));
+        });
+      },
+    );
     on<GetReminderEvent>(
       (event, emit) async {
-        emit(AppResponse.loading());
+        emit(AppResponse.loading({}));
         await DatabaseRepository.getReminders().then((Map value) {
           Map<DateTime, List<ReminderModel>> newState = {};
           value.forEach((key, value) {
@@ -37,7 +53,7 @@ class ReminderBloc extends Bloc<ReminderEvent,
         }).onError((error, stackTrace) {
           log(error.toString(), name: "Reminder Bloc");
           emit(AppResponse.error(error.toString()));
-        }); 
+        });
       },
     );
   }
