@@ -18,7 +18,6 @@ class ReminderBloc extends Bloc<ReminderEvent,
         }
         DatabaseRepository.addReminders(state.data!).then((value) {
           emit(AppResponse.completed(state.data));
-          //Put this bloc
         }).onError((error, stackTrace) {
           log(error.toString());
           emit(AppResponse.error(error.toString()));
@@ -29,9 +28,6 @@ class ReminderBloc extends Bloc<ReminderEvent,
       (event, emit) async {
         emit(AppResponse.loading());
         await DatabaseRepository.getReminders().then((Map value) {
-          // log((value.keys.toList()[0] as DateTime).toString());
-          // emit(AppResponse.completed(
-          //    value));
           Map<DateTime, List<ReminderModel>> newState = {};
           value.forEach((key, value) {
             newState[key] =
@@ -40,8 +36,8 @@ class ReminderBloc extends Bloc<ReminderEvent,
           emit(AppResponse.completed(newState));
         }).onError((error, stackTrace) {
           log(error.toString(), name: "Reminder Bloc");
-          // emit(AppResponse.error(error.toString()));
-        });
+          emit(AppResponse.error(error.toString()));
+        }); 
       },
     );
   }
