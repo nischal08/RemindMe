@@ -28,7 +28,7 @@ class ReminderScreen extends StatefulWidget {
 class ReminderScreenState extends State<ReminderScreen> {
   final todaysDate = DateTime.now();
   DateTime _focusedCalendarDate = DateTime.now();
-  final _initialCalendarDate = DateTime.now();
+  final _initialCalendarDate = DateTime(2022);
   final _lastCalendarDate = DateTime(3000);
   DateTime? selectedCalendarDate;
   final titleController = TextEditingController();
@@ -40,9 +40,17 @@ class ReminderScreenState extends State<ReminderScreen> {
   @override
   void initState() {
     selectedCalendarDate = _focusedCalendarDate;
+    _convertSelectedDateToTzDate();
     allReminders = {};
     BlocProvider.of<ReminderBloc>(context).add(GetReminderEvent());
     super.initState();
+  }
+
+  _convertSelectedDateToTzDate() {
+    selectedCalendarDate = DateTime.parse(
+        DateTime.parse(selectedCalendarDate.toString().substring(0, 10))
+            .toString()
+            .replaceAll("000", "00Z"));
   }
 
   @override
@@ -61,27 +69,14 @@ class ReminderScreenState extends State<ReminderScreen> {
     if (titleController.text.isEmpty && descpController.text.isEmpty) {
       GeneralToast.showToast("Please enter title & description");
     } else {
-
-      //Put this bloc
-      if (allReminders[selectedCalendarDate] != null) {
-        allReminders[selectedCalendarDate]?.add(ReminderModel(
-            title: titleController.text,
-            descp: descpController.text,
-            priority: currentPriority));
-      } else {
-        allReminders[selectedCalendarDate!] = [
-          ReminderModel(
+      _convertSelectedDateToTzDate();
+      BlocProvider.of<ReminderBloc>(context).add(AddReminderEvent(
+          selectedCalendarDate!,
+          reminder: ReminderModel(
               title: titleController.text,
               descp: descpController.text,
-              priority: currentPriority)
-        ];
-      }
-
-      BlocProvider.of<ReminderBloc>(context)
-          .add(AddReminderEvent(reminders: allReminders));
+              priority: currentPriority)));
       log(allReminders.toString());
-      setState(() {});
-
       titleController.clear();
       descpController.clear();
       GeneralToast.showToast("Reminder successfully added.");
@@ -95,21 +90,12 @@ class ReminderScreenState extends State<ReminderScreen> {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: selectedCalendarDate!,
-        firstDate: DateTime(2023),
-        //DateTime.now() - not to allow to choose before today.
-        lastDate: DateTime(2100));
+        firstDate: DateTime.now(),
+        lastDate: _lastCalendarDate);
 
     if (pickedDate != null) {
-      log(pickedDate
-          .toString()); //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      log(formattedDate); //formatted date output using intl package =>  2021-03-16
-
-      selectedCalendarDate = DateTime.parse(
-          DateTime.parse(pickedDate.toString().substring(0, 10))
-              .toString()
-              .replaceAll("000", "00Z"));
-      log(selectedCalendarDate.toString());
+      selectedCalendarDate = pickedDate;
       dateInput.text = formattedDate; //set output date to TextField value.
     } else {}
   }
@@ -188,6 +174,10 @@ class ReminderScreenState extends State<ReminderScreen> {
     return allReminders[dateTime] ?? [];
   }
 
+  // List<ReminderModel> _is(DateTime dateTime) {
+  //   return allReminders[dateTime] ?? [];
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,7 +193,11 @@ class ReminderScreenState extends State<ReminderScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddEventDialog(),
-        label: const Text('Add Reminder'),
+        label: Text(
+          'Add Reminder',
+          style: smallText.copyWith(
+              color: AppColors.primaryColor, fontWeight: FontWeight.w500),
+        ),
       ),
       body: BlocBuilder<ReminderBloc,
           AppResponse<Map<DateTime, List<ReminderModel>>>>(builder: (_, state) {
@@ -218,6 +212,7 @@ class ReminderScreenState extends State<ReminderScreen> {
             );
           case Status.COMPLETED:
             allReminders = state.data!;
+            log(selectedCalendarDate.toString());
             return Column(
               children: [
                 TableCalendar(
@@ -365,7 +360,7 @@ class ReminderScreenState extends State<ReminderScreen> {
                                 ..._listOfDayEvents(selectedCalendarDate!).map(
                                   (myEvents) => ListTile(
                                     leading: const Icon(
-                                      Icons.check_box_outlined,
+                                      Icons.radio_button_checked,
                                       color: AppColors.primaryColor,
                                     ),
                                     contentPadding: EdgeInsets.zero,

@@ -9,7 +9,7 @@ class AppResponse<T> {
 
   AppResponse(this.status, this.data, this.message);
 
-  AppResponse.loading() : status = Status.LOADING;
+  AppResponse.loading([this.data]) : status = Status.LOADING;
 
   AppResponse.completed(this.data) : status = Status.COMPLETED;
 
