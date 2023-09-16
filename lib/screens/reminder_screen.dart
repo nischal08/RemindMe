@@ -6,6 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:remind_me/bloc/events/reminder_event.dart';
 import 'package:remind_me/bloc/reminder_bloc.dart';
+import 'package:remind_me/data/background/background_event_fetch.dart';
+import 'package:remind_me/data/image_constants.dart';
 import 'package:remind_me/data/response/app_response.dart';
 import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/styles/app_colors.dart';
@@ -13,12 +15,11 @@ import 'package:remind_me/styles/styles.dart';
 import 'package:remind_me/widgets/general_textfield.dart';
 import 'package:remind_me/widgets/reminder_item.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'data/enum/reminder_priority.dart';
-import 'data/response/status.dart';
-import 'utils/general_toast.dart';
+import '../data/enum/reminder_priority.dart';
+import '../data/response/status.dart';
+import '../utils/general_toast.dart';
 
 class ReminderScreen extends StatefulWidget {
-  
   const ReminderScreen({Key? key}) : super(key: key);
 
   @override
@@ -192,7 +193,9 @@ class ReminderScreenState extends State<ReminderScreen> {
         backgroundColor: AppColors.reminderBgColor,
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showAddEventDialog(),
+        onPressed: () {
+          _showAddEventDialog();
+        },
         label: Text(
           'Add Reminder',
           style: smallText.copyWith(
@@ -330,8 +333,7 @@ class ReminderScreenState extends State<ReminderScreen> {
                                 SizedBox(
                                   height: 32.h,
                                 ),
-                                SvgPicture.asset(
-                                    "assets/images/no reminder.svg",
+                                SvgPicture.asset(AppImage.noReminderImage,
                                     height: 200),
                                 Text(
                                   "No reminder for ${DateFormat.yMMMEd().format(selectedCalendarDate)}",
@@ -377,6 +379,3 @@ class ReminderScreenState extends State<ReminderScreen> {
     );
   }
 }
-
-
-
