@@ -19,15 +19,14 @@ class ReminderScreen extends StatefulWidget {
 
 class ReminderScreenState extends State<ReminderScreen> {
   final todaysDate = DateTime.now();
-  var _focusedCalendarDate = DateTime.now();
-  final _initialCalendarDate = DateTime(2000);
-  final _lastCalendarDate = DateTime(2050);
+  DateTime _focusedCalendarDate = DateTime.now();
+  final _initialCalendarDate = DateTime.now();
+  final _lastCalendarDate = DateTime(3000);
   DateTime? selectedCalendarDate;
   final titleController = TextEditingController();
   final dateInput = TextEditingController();
   final descpController = TextEditingController();
-  final currentPriority = PriorityEnum.normal;
-  final Color bgColor = const Color(0xffF09290);
+  PriorityEnum currentPriority = PriorityEnum.normal;
   late Map<DateTime, List<ReminderModel>> mySelectedEvents;
 
   @override
@@ -41,6 +40,7 @@ class ReminderScreenState extends State<ReminderScreen> {
   void dispose() {
     titleController.dispose();
     descpController.dispose();
+    currentPriority = PriorityEnum.normal;
     super.dispose();
   }
 
@@ -80,7 +80,7 @@ class ReminderScreenState extends State<ReminderScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Reminder successfully added.'),
-          duration: Duration(seconds: 3),
+          duration: Duration(seconds: 2),
         ),
       );
       Navigator.pop(context);
@@ -102,8 +102,8 @@ class ReminderScreenState extends State<ReminderScreen> {
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       log(formattedDate); //formatted date output using intl package =>  2021-03-16
 
-      selectedCalendarDate =
-          DateTime.parse(DateTime.parse(pickedDate.toString().substring(0, 10))
+      selectedCalendarDate = DateTime.parse(
+          DateTime.parse(pickedDate.toString().substring(0, 10))
               .toString()
               .replaceAll("000", "00Z"));
       log(selectedCalendarDate.toString());

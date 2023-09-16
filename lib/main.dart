@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:remind_me/home_screen.dart';
+import 'package:remind_me/reminder_screen.dart';
 import 'package:remind_me/styles/app_colors.dart';
 
 void main() {
