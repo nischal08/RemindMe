@@ -26,11 +26,14 @@ void main() async {
   runApp(const MyApp());
   BackgroundFetch.configure(
       BackgroundFetchConfig(
-          minimumFetchInterval: 15,
-          stopOnTerminate: false,
-          startOnBoot: true,
-          enableHeadless: true), (String taskId) async {
-    await BackgroundEventFetch.backgroundFetchHeadlessTask(taskId);
+        minimumFetchInterval: 15,
+        stopOnTerminate: false,
+        startOnBoot: true,
+        enableHeadless: true,
+      ), (String taskId) async {
+    if (taskId == "flutter_background_fetch") {
+      await BackgroundEventFetch.backgroundFetchHeadlessTask(taskId);
+    }
     log('[BackgroundFetch] Event received.');
     // <-- Event callback
     // This callback is typically fired every 15 minutes while in the background.
@@ -39,6 +42,7 @@ void main() async {
     BackgroundFetch.finish(taskId);
   }, (String taskId) async {
     // <-- Timeout callback
+    log("[BackgroundFetch] TIMEOUT: $taskId");
     // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
     BackgroundFetch.finish(taskId);
   });
