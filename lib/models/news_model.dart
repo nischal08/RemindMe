@@ -8,7 +8,7 @@ class NewsModel {
   late final int totalResults;
   late final List<Articles> articles;
 
-  NewsModel.fromJson(Map<String, dynamic> json) {
+  NewsModel.fromJson(Map json) {
     status = json['status'];
     totalResults = json['totalResults'];
     articles =
@@ -44,7 +44,7 @@ class Articles {
   late final String publishedAt;
   late final String content;
 
-  Articles.fromJson(Map<String, dynamic> json) {
+  Articles.fromJson(Map json) {
     source = Source.fromJson(json['source']);
     author = json['author'];
     title = json['title'];
@@ -77,7 +77,7 @@ class Source {
   late final String? id;
   late final String name;
 
-  Source.fromJson(Map<String, dynamic> json) {
+  Source.fromJson(Map json) {
     id = json['id'];
     name = json['name'];
   }

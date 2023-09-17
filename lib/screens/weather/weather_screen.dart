@@ -7,6 +7,8 @@ import 'package:remind_me/bloc/weather_bloc.dart';
 import 'package:remind_me/data/response/app_response.dart';
 import 'package:remind_me/data/response/status.dart';
 import 'package:remind_me/models/weather_model.dart';
+import 'package:remind_me/screens/weather/widgets/daily_forecast_widget.dart';
+import 'package:remind_me/screens/weather/widgets/hourly_forecast_widget.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/styles.dart';
 import 'package:remind_me/widgets/general_error.dart';
@@ -23,7 +25,6 @@ class WeatherScreen extends StatefulWidget {
 class WeatherScreenState extends State<WeatherScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<WeatherBloc>().getWeather();
   }
@@ -83,13 +84,10 @@ class WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // String cityName = "Kathmandu"; //city name
     int currTemp = 30; // current temperature
     int maxTemp = 30; // today max temperature
     int minTemp = 2; // today min temperature
     Size size = MediaQuery.of(context).size;
-    // var brightness = MediaQuery.of(context).platformBrightness;
-    // bool isDarkMode = brightness == Brightness.dark;
     bool isDarkMode = true;
     return Scaffold(
       appBar: AppBar(
@@ -97,7 +95,8 @@ class WeatherScreenState extends State<WeatherScreen> {
         title: const Text(
           'Weather',
           style: TextStyle(
-              color: Colors.white,),
+            color: Colors.white,
+          ),
         ),
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -262,22 +261,27 @@ class WeatherScreenState extends State<WeatherScreen> {
                                 ),
                               ),
                             ),
+
+                            //Map function is used to build row of each hourly forecast widget
                             Padding(
                               padding: EdgeInsets.all(size.width * 0.005),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: today.hours
-                                      .map((e) => buildForecastToday(
-                                            DateFormat.Hm().format(DateTime.parse(
-                                                "${today.datetime}T${e.datetime}")), //hour
-                                            e.temp!.floor(), //temperature
-                                            e.windspeed!.floor(), //wind (km/h)
-                                            e.precipprob!
+                                      .map((e) => HourlyForecastWidget(
+                                            time: DateFormat.Hm().format(
+                                                DateTime.parse(
+                                                    "${today.datetime}T${e.datetime}")), //hour
+                                            temp: e.temp!.floor(), //temperature
+                                            wind: e.windspeed!
+                                                .floor(), //wind (km/h)
+                                            rainChance: e.precipprob!
                                                 .floor(), //rain chance (%)
-                                            getIcons(e.icon), //weather icon
-                                            size,
-                                            isDarkMode,
+                                            weatherIcon:
+                                                getIcons(e.icon), //weather icon
+                                            size: size,
+                                            isDarkMode: isDarkMode,
                                           ))
                                       .toList(),
                                 ),
@@ -321,12 +325,13 @@ class WeatherScreenState extends State<WeatherScreen> {
                             const Divider(
                               color: Colors.white,
                             ),
+                            //Map function is used to build column of each day forecast widget
                             Padding(
                               padding: EdgeInsets.all(size.width * 0.005),
                               child: Column(
                                 children: state.data!.days
-                                    .map((e) => buildSevenDayForecast(
-                                          DateTime.parse(e.datetime)
+                                    .map((e) => DailyForecastWidget(
+                                          time: DateTime.parse(e.datetime)
                                                       .toIso8601String()
                                                       .substring(0, 10) ==
                                                   DateTime.now()
@@ -335,11 +340,14 @@ class WeatherScreenState extends State<WeatherScreen> {
                                               : DateFormat.E().format(
                                                   DateTime.parse(
                                                       e.datetime)), //day
-                                          e.tempmin!.floor(), //min temperature
-                                          e.tempmax!.floor(), //max temperature
-                                          getIcons(e.icon), //weather icon
-                                          size,
-                                          isDarkMode,
+                                          minTemp: e.tempmin!
+                                              .floor(), //min temperature
+                                          maxTemp: e.tempmax!
+                                              .floor(), //max temperature
+                                          weatherIcon:
+                                              getIcons(e.icon), //weather icon
+                                          size: size,
+                                          isDarkMode: isDarkMode,
                                         ))
                                     .toList(),
                               ),
@@ -376,158 +384,5 @@ class WeatherScreenState extends State<WeatherScreen> {
       default:
         return FontAwesomeIcons.sun;
     }
-  }
-
-  Widget buildForecastToday(String time, int temp, int wind, int rainChance,
-      IconData weatherIcon, size, bool isDarkMode) {
-    return Padding(
-      padding: EdgeInsets.all(size.width * 0.025),
-      child: Column(
-        children: [
-          Text(
-            time,
-            style: bodyText.copyWith(
-              color: isDarkMode ? Colors.white : Colors.black,
-              fontSize: size.height * 0.02,
-            ),
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: size.height * 0.005,
-                ),
-                child: FaIcon(
-                  weatherIcon,
-                  color: isDarkMode ? Colors.white : Colors.black,
-                  size: size.height * 0.03,
-                ),
-              ),
-            ],
-          ),
-          Text(
-            '$temp˚C',
-            style: bodyText.copyWith(
-              color: isDarkMode ? Colors.white : Colors.black,
-              fontSize: size.height * 0.025,
-            ),
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: size.height * 0.01,
-                ),
-                child: FaIcon(
-                  FontAwesomeIcons.wind,
-                  color: Colors.white,
-                  size: size.height * 0.03,
-                ),
-              ),
-            ],
-          ),
-          Text(
-            '$wind km/h',
-            style: bodyText.copyWith(
-              color: Colors.white60,
-              fontSize: size.height * 0.02,
-            ),
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: size.height * 0.01,
-                ),
-                child: FaIcon(
-                  FontAwesomeIcons.umbrella,
-                  color: Colors.white,
-                  size: size.height * 0.03,
-                ),
-              ),
-            ],
-          ),
-          Text(
-            '$rainChance %',
-            style: bodyText.copyWith(
-              color: Colors.white60,
-              fontSize: size.height * 0.02,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildSevenDayForecast(String time, int minTemp, int maxTemp,
-      IconData weatherIcon, size, bool isDarkMode) {
-    return Padding(
-      padding: EdgeInsets.all(
-        size.height * 0.005,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.02,
-                ),
-                child: Text(
-                  time,
-                  style: bodyText.copyWith(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                    fontSize: size.height * 0.025,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.25,
-                ),
-                child: FaIcon(
-                  weatherIcon,
-                  color: isDarkMode ? Colors.white : Colors.black,
-                  size: size.height * 0.03,
-                ),
-              ),
-              Align(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: size.width * 0.15,
-                  ),
-                  child: Text(
-                    '$minTemp˚C',
-                    style: bodyText.copyWith(
-                      color: isDarkMode ? Colors.white38 : Colors.black38,
-                      fontSize: size.height * 0.025,
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.05,
-                  ),
-                  child: Text(
-                    '$maxTemp˚C',
-                    style: bodyText.copyWith(
-                      color: isDarkMode ? Colors.white : Colors.black,
-                      fontSize: size.height * 0.025,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Divider(
-            color: isDarkMode ? Colors.white : Colors.black,
-          ),
-        ],
-      ),
-    );
   }
 }

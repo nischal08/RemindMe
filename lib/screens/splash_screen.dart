@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    // These are the callbacks
+    // These are used for coming back to pervious from setting screen without giving the permission
     switch (state) {
       case AppLifecycleState.resumed:
         if (isPaused) {
@@ -70,6 +70,7 @@ class _SplashScreenState extends State<SplashScreen>
     await _getPermission();
   }
 
+//This function will not let you go to other screen without giving all the requirement permission
   _getPermission({bool showNotification = false}) async {
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<

@@ -39,8 +39,7 @@ class WeatherBloc extends Cubit<AppResponse<WeatherModel>> {
       double longitude;
 
       if (locationName != null) {
-        List<Location> locations =
-            await locationFromAddress(locationName);
+        List<Location> locations = await locationFromAddress(locationName);
         latitude = locations.first.latitude;
         longitude = locations.first.longitude;
         log("Address to Lat long ${locations.first.latitude} : ${locations.first.longitude}");
@@ -63,7 +62,7 @@ class WeatherBloc extends Cubit<AppResponse<WeatherModel>> {
         late Map<String, dynamic> newData = {};
         jsonData.forEach(
           (key, value) {
-            newData[key] = value;
+            newData[key.toString()] = value;
           },
         );
         emit(

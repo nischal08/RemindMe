@@ -9,7 +9,6 @@ class WeatherModel {
     required this.description,
     required this.days,
     required this.alerts,
-    required this.currentConditions,
   });
   late final double latitude;
   late final double longitude;
@@ -20,9 +19,8 @@ class WeatherModel {
   late final String description;
   late final List<Days> days;
   late final List<dynamic> alerts;
-  late final CurrentConditions currentConditions;
 
-  WeatherModel.fromJson(Map<String, dynamic> json) {
+  WeatherModel.fromJson(Map json) {
     latitude = json['latitude'];
     longitude = json['longitude'];
     resolvedAddress = json['resolvedAddress'];
@@ -32,7 +30,6 @@ class WeatherModel {
     description = json['description'];
     days = List.from(json['days']).map((e) => Days.fromJson(e)).toList();
     alerts = List.castFrom<dynamic, dynamic>(json['alerts']);
-    currentConditions = CurrentConditions.fromJson(json['currentConditions']);
   }
 
   Map<String, dynamic> toJson() {
@@ -46,7 +43,6 @@ class WeatherModel {
     data['description'] = description;
     data['days'] = days.map((e) => e.toJson()).toList();
     data['alerts'] = alerts;
-    data['currentConditions'] = currentConditions.toJson();
     return data;
   }
 }
@@ -123,7 +119,7 @@ class Days {
   late final String source;
   late final List<Hours> hours;
 
-  Days.fromJson(Map<String, dynamic> json) {
+  Days.fromJson(Map json) {
     datetime = json['datetime'];
     datetimeEpoch = json['datetimeEpoch'];
     tempmax = json['tempmax'];
@@ -250,7 +246,7 @@ class Hours {
   late final String icon;
   late final String source;
 
-  Hours.fromJson(Map<String, dynamic> json) {
+  Hours.fromJson(Map json) {
     datetime = json['datetime'];
     datetimeEpoch = json['datetimeEpoch'];
     temp = json['temp'];
@@ -301,123 +297,6 @@ class Hours {
     data['conditions'] = conditions;
     data['icon'] = icon;
     data['source'] = source;
-    return data;
-  }
-}
-
-class CurrentConditions {
-  CurrentConditions({
-    required this.datetime,
-    required this.datetimeEpoch,
-    required this.temp,
-    required this.feelslike,
-    required this.humidity,
-    required this.dew,
-    required this.precip,
-    required this.precipprob,
-    required this.snow,
-    required this.snowdepth,
-    required this.preciptype,
-    required this.windspeed,
-    required this.winddir,
-    required this.pressure,
-    required this.visibility,
-    required this.cloudcover,
-    required this.solarradiation,
-    required this.solarenergy,
-    required this.uvindex,
-    required this.conditions,
-    required this.icon,
-    required this.stations,
-    required this.source,
-    required this.sunrise,
-    required this.sunset,
-    required this.moonphase,
-  });
-  late final String datetime;
-  late final int datetimeEpoch;
-  late final double temp;
-  late final double feelslike;
-  late final double humidity;
-  late final double dew;
-  late final double precip;
-  late final double precipprob;
-  late final double snow;
-  late final double snowdepth;
-  late final List<String> preciptype;
-  late final double windspeed;
-  late final double winddir;
-  late final double pressure;
-  late final double visibility;
-  late final double cloudcover;
-  late final double solarradiation;
-  late final double solarenergy;
-  late final double uvindex;
-  late final String conditions;
-  late final String icon;
-  late final List<dynamic> stations;
-  late final String source;
-  late final String sunrise;
-  late final String sunset;
-  late final double moonphase;
-
-  CurrentConditions.fromJson(Map<String, dynamic> json) {
-    datetime = json['datetime'];
-    datetimeEpoch = json['datetimeEpoch'];
-    temp = json['temp'];
-    feelslike = json['feelslike'];
-    humidity = json['humidity'];
-    dew = json['dew'];
-    precip = json['precip'];
-    precipprob = json['precipprob'];
-    snow = json['snow'];
-    snowdepth = json['snowdepth'];
-    preciptype = List.castFrom<dynamic, String>(json['preciptype']);
-    windspeed = json['windspeed'];
-    winddir = json['winddir'];
-    pressure = json['pressure'];
-    visibility = json['visibility'];
-    cloudcover = json['cloudcover'];
-    solarradiation = json['solarradiation'];
-    solarenergy = json['solarenergy'];
-    uvindex = json['uvindex'];
-    conditions = json['conditions'];
-    icon = json['icon'];
-    stations = List.castFrom<dynamic, dynamic>(json['stations']);
-    source = json['source'];
-    sunrise = json['sunrise'];
-    sunset = json['sunset'];
-    moonphase = json['moonphase'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['datetime'] = datetime;
-    data['datetimeEpoch'] = datetimeEpoch;
-    data['temp'] = temp;
-    data['feelslike'] = feelslike;
-    data['humidity'] = humidity;
-    data['dew'] = dew;
-    data['precip'] = precip;
-    data['precipprob'] = precipprob;
-    data['snow'] = snow;
-    data['snowdepth'] = snowdepth;
-    data['preciptype'] = preciptype;
-    data['windspeed'] = windspeed;
-    data['winddir'] = winddir;
-    data['pressure'] = pressure;
-    data['visibility'] = visibility;
-    data['cloudcover'] = cloudcover;
-    data['solarradiation'] = solarradiation;
-    data['solarenergy'] = solarenergy;
-    data['uvindex'] = uvindex;
-    data['conditions'] = conditions;
-    data['icon'] = icon;
-    data['stations'] = stations;
-    data['source'] = source;
-    data['sunrise'] = sunrise;
-    data['sunset'] = sunset;
-    data['moonphase'] = moonphase;
     return data;
   }
 }

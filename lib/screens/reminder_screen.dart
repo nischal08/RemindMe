@@ -242,20 +242,12 @@ class ReminderScreenState extends State<ReminderScreen> {
                   lastDay: _lastCalendarDate,
                   // latest allowed date
                   calendarFormat: CalendarFormat.month,
-                  // default view when displayed
-                  // default is Saturday & Sunday but can be set to any day.
-                  // instead of day number can be mentioned as well.
                   weekendDays: const [DateTime.saturday],
-                  // default is Sunday but can be changed according to locale
                   startingDayOfWeek: StartingDayOfWeek.sunday,
-                  // height between the day row and 1st date row, default is 16.0
                   daysOfWeekHeight: 28.h,
-                  // height between the date rows, default is 52.0
                   rowHeight: 40.h,
-
                   // this property needs to be added if we want to show events
                   eventLoader: _listOfDayEvents,
-                  // Calendar Header Styling
                   headerStyle: HeaderStyle(
                     formatButtonVisible: false,
                     titleCentered: true,
@@ -278,9 +270,7 @@ class ReminderScreenState extends State<ReminderScreen> {
                       size: 28,
                     ),
                   ),
-                  // Calendar Days Styling
                   daysOfWeekStyle: DaysOfWeekStyle(
-                    // Weekend days color (Sat,Sun)
                     weekdayStyle: smallText.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -291,20 +281,16 @@ class ReminderScreenState extends State<ReminderScreen> {
                     ),
                   ),
 
-                  // Calendar Dates styling
                   calendarStyle: CalendarStyle(
-                    // Weekend dates color (Sat & Sun Column)
                     weekendTextStyle:
                         smallText.copyWith(color: Colors.green.shade400),
                     defaultTextStyle: smallText.copyWith(
                       color: Colors.white,
                     ),
-                    // highlighted color for today
                     todayDecoration: BoxDecoration(
                       color: AppColors.todayDateColor,
                       shape: BoxShape.circle,
                     ),
-                    // highlighted color for selected day
                     selectedDecoration: BoxDecoration(
                       color: AppColors.selectedDateColor,
                       shape: BoxShape.circle,
@@ -313,15 +299,12 @@ class ReminderScreenState extends State<ReminderScreen> {
                         color: Colors.green.shade400, shape: BoxShape.circle),
                   ),
                   selectedDayPredicate: (currentSelectedDate) {
-                    // as per the documentation 'selectedDayPredicate' needs to determine
-                    // current selected day
                     return (isSameDay(
                         selectedCalendarDate, currentSelectedDate));
                   },
                   availableGestures: AvailableGestures.all,
 
                   onDaySelected: (selectedDay, focusedDay) {
-                    // as per the documentation
                     if (!isSameDay(selectedCalendarDate, selectedDay)) {
                       setState(() {
                         selectedCalendarDate = selectedDay;

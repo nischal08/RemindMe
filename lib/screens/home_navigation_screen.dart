@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:remind_me/screens/news_screen.dart';
 import 'package:remind_me/screens/reminder_screen.dart';
-import 'package:remind_me/screens/weather_screen.dart';
+import 'package:remind_me/screens/weather/weather_screen.dart';
 import 'package:remind_me/styles/app_colors.dart';
 
 class HomeNavigationScreen extends StatefulWidget {
