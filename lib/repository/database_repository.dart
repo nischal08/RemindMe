@@ -27,6 +27,16 @@ class DatabaseRepository {
         key: AppKeys.weatherKey, boxId: AppKeys.weatherBoxId);
   }
 
+  static Future<void> addNewsData(Map<String, dynamic> data) async {
+    await DatabaseHelper.addBoxItem(
+        key: AppKeys.newsKey, boxId: AppKeys.newsBoxId, value: data);
+  }
+
+  static Future<Map?> getNewsData() async {
+    return await DatabaseHelper.getBoxItem(
+        key: AppKeys.newsKey, boxId: AppKeys.newsBoxId);
+  }
+
   static Future<void> deleteAllReminders() async {
     await DatabaseHelper.deleteBoxItem(
         key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId);

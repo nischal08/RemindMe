@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:remind_me/bloc/news_bloc.dart';
 import 'package:remind_me/bloc/reminder_bloc.dart';
 import 'package:remind_me/bloc/weather_bloc.dart';
 import 'package:remind_me/data/background/background_event_fetch.dart';
@@ -118,6 +119,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => WeatherBloc(),
+        ),
+        BlocProvider(
+          create: (context) => NewsBloc(),
         ),
       ],
       child: ScreenUtilInit(

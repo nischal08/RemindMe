@@ -68,6 +68,7 @@ class WeatherScreenState extends State<WeatherScreen> {
                         .read<WeatherBloc>()
                         .getWeather(locationNameController.text);
                     Navigator.pop(context);
+                    locationNameController.clear();
                   },
                   child: Text(
                     'Search',
@@ -93,10 +94,10 @@ class WeatherScreenState extends State<WeatherScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.reminderBgColor,
-        title: Text(
+        title: const Text(
           'Weather',
-          style: bodyText.copyWith(
-              color: Colors.white, fontSize: 16.h, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.white,),
         ),
         elevation: 0,
         scrolledUnderElevation: 0,

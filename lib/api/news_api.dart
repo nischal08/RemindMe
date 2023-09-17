@@ -1,19 +1,19 @@
 import 'package:remind_me/api/api_manager.dart';
+import 'package:remind_me/data/app_urls.dart';
 import 'package:remind_me/data/enum/request_type.dart';
-import 'package:remind_me/models/weather_model.dart';
+import 'package:remind_me/models/news_model.dart';
 
-class WeatherApi {
+class NewsApi {
   final _apiManager = ApiManager();
-  Future<WeatherModel> getWeatherData(url) async {
+  Future<NewsModel> getNewsData() async {
     try {
       dynamic response = await _apiManager.request(
-        url: url,
+        url: AppUrl.newsApi,
         requestType: RequestType.get,
       );
-      return WeatherModel.fromJson(response);
+      return NewsModel.fromJson(response);
     } catch (e) {
       rethrow;
     }
   }
-
 }

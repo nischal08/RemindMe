@@ -22,5 +22,6 @@ class AppColors {
   static const Color defaultAlertcancelBgColor = Color(0xffFFEBEB);
   static const Color defaultAlertcancelFgColor = Color(0xffFF0000);
   static const Color defaultAlertOkBgColor = Color(0xff1E944E);
+    static const Color greyColor = Color(0xff898d97);
 
 }
