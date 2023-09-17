@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:remind_me/api/weather_api.dart';
 import 'package:remind_me/data/app_urls.dart';
@@ -36,9 +37,18 @@ class WeatherBloc extends Cubit<AppResponse<WeatherModel>> {
       final myRepo = WeatherApi();
       double latitude;
       double longitude;
-      Position position = await getUserCurrentLocation();
-      latitude = position.latitude;
-      longitude = position.longitude;
+
+      if (locationName != null) {
+        List<Location> locations =
+            await locationFromAddress(locationName);
+        latitude = locations.first.latitude;
+        longitude = locations.first.longitude;
+        log("Address to Lat long ${locations.first.latitude} : ${locations.first.longitude}");
+      } else {
+        Position position = await getUserCurrentLocation();
+        latitude = position.latitude;
+        longitude = position.longitude;
+      }
       final String url = AppUrl.weatherApiUrl
           .replaceAll("[latitude]", latitude.toString())
           .replaceAll("[longitude]", longitude.toString());

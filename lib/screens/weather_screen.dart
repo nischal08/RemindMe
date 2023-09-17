@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +11,7 @@ import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/styles.dart';
 import 'package:remind_me/widgets/general_error.dart';
 import 'package:remind_me/widgets/general_loading.dart';
+import 'package:remind_me/widgets/general_textfield.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({Key? key}) : super(key: key);
@@ -27,6 +26,58 @@ class WeatherScreenState extends State<WeatherScreen> {
     // TODO: implement initState
     super.initState();
     context.read<WeatherBloc>().getWeather();
+  }
+
+  final locationNameController = TextEditingController();
+  _showSearchLocation() async {
+    return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(
+                'Search Weather',
+                style: subTitleText,
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GeneralTextField(
+                    removePrefixIconDivider: true,
+                    textInputAction: TextInputAction.next,
+                    keywordType: TextInputType.text,
+                    prefixWidget: const Icon(Icons.search),
+                    validate: (val) {},
+                    controller: locationNameController,
+                    hintText: 'Enter location eg. Nepal',
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'Cancel',
+                    style: bodyText.copyWith(
+                      color: AppColors.redColor,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context
+                        .read<WeatherBloc>()
+                        .getWeather(locationNameController.text);
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Search',
+                    style: bodyText.copyWith(
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ));
   }
 
   @override
@@ -50,11 +101,14 @@ class WeatherScreenState extends State<WeatherScreen> {
         elevation: 0,
         scrolledUnderElevation: 0,
         actions: [
-          Container(
-            padding: EdgeInsets.only(right: 16.w),
-            child: const FaIcon(
-              FontAwesomeIcons.circlePlus,
-              color: Colors.white,
+          GestureDetector(
+            onTap: _showSearchLocation,
+            child: Container(
+              padding: EdgeInsets.only(right: 16.w),
+              child: const FaIcon(
+                FontAwesomeIcons.circlePlus,
+                color: Colors.white,
+              ),
             ),
           )
         ],
