@@ -53,7 +53,6 @@ class WeatherBloc extends Cubit<AppResponse<WeatherModel>> {
       final String url = AppUrl.weatherApiUrl
           .replaceAll("[latitude]", latitude.toString())
           .replaceAll("[longitude]", longitude.toString());
-      log(url);
       myRepo.getWeatherData(url).then((WeatherModel value) {
         DatabaseRepository.addWeatherData(value.toJson());
         emit(AppResponse.completed(value));
