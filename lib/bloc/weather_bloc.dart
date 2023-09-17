@@ -24,6 +24,7 @@ class WeatherBloc extends Cubit<AppResponse<WeatherModel>> {
   Future<void> getWeather([String? locationName]) async {
     emit(AppResponse.loading());
     late bool isOnline;
+    //This is logic for checking internet and retreiving the stored data in database as well as api calling when there is internet
     try {
       final result = await InternetAddress.lookup('www.google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -37,13 +38,14 @@ class WeatherBloc extends Cubit<AppResponse<WeatherModel>> {
       final myRepo = WeatherApi();
       double latitude;
       double longitude;
-
+//This locationName is used while searching the weather of that particular location
       if (locationName != null) {
+        //This function is used to retrieve latitude and longitude of particular location
         List<Location> locations = await locationFromAddress(locationName);
         latitude = locations.first.latitude;
         longitude = locations.first.longitude;
-        log("Address to Lat long ${locations.first.latitude} : ${locations.first.longitude}");
       } else {
+         //This function is used to retrieve latitude and longitude of current location
         Position position = await getUserCurrentLocation();
         latitude = position.latitude;
         longitude = position.longitude;

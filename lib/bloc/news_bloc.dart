@@ -12,6 +12,7 @@ class NewsBloc extends Cubit<AppResponse<NewsModel>> {
   Future<void> getNews() async {
     emit(AppResponse.loading());
     late bool isOnline;
+    //This is logic for checking internet and retreiving the stored data in database as well as api calling when there is internet
     try {
       final result = await InternetAddress.lookup('www.google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -29,15 +30,9 @@ class NewsBloc extends Cubit<AppResponse<NewsModel>> {
     } else {
       Map? jsonData = await DatabaseRepository.getNewsData();
       if (jsonData != null) {
-        late Map<String, dynamic> newData = {};
-        jsonData.forEach(
-          (key, value) {
-            newData[key] = value;
-          },
-        );
         emit(
           AppResponse.completed(
-            NewsModel.fromJson(newData),
+            NewsModel.fromJson(jsonData),
           ),
         );
       } else {

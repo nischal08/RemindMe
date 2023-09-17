@@ -24,6 +24,7 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
   runApp(const MyApp());
+  //This function used to run program on 15 minutes interval on background
   BackgroundEventFetch.initiateBackgroundFetch();
 }
 
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //These are the configuration of showing notification
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('logo');
     final DarwinInitializationSettings initializationSettingsDarwin =

@@ -7,8 +7,8 @@ import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/repository/database_repository.dart';
 
 class BackgroundEventFetch {
+  //This function is used to show notification on the device
   static Future<void> showNotification() async {
-    log('[BackgroundFetch] Headless event received.');
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('reminderChannel', 'notificationChannel',
             importance: Importance.max,
@@ -26,13 +26,11 @@ class BackgroundEventFetch {
     });
     List<DateTime> listData = newRemindersList.keys.toList();
 
-    log(listData.toString(), name: "Before");
     listData.sort(
       (a, b) {
         return a.compareTo(b);
       },
     );
-    log(listData.toString(), name: "After");
 
     DateTime todayConvertedDate = DateTime.parse(
         DateTime.parse(DateTime.now().toString().substring(0, 10))
@@ -49,7 +47,7 @@ class BackgroundEventFetch {
             reminder.title,
             reminder.descp,
             notificationDetails,
-            payload:  listData[i].toString(),
+            payload: listData[i].toString(),
           );
         }
         break;
@@ -65,19 +63,13 @@ class BackgroundEventFetch {
           startOnBoot: true,
           enableHeadless: true,
         ), (String taskId) async {
+      // This function will running every 15 minutes interval
       if (taskId == "flutter_background_fetch") {
         await showNotification();
       }
-      log('[BackgroundFetch] Event received.');
-      // <-- Event callback
-      // This callback is typically fired every 15 minutes while in the background.
-      // IMPORTANT:  You must signal completion of your fetch task or the OS could
-      // punish your app for spending much time in the background.
       BackgroundFetch.finish(taskId);
     }, (String taskId) async {
-      // <-- Timeout callback
-      log("[BackgroundFetch] TIMEOUT: $taskId");
-      // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
+      //This function run after the completion of 15 minutes interval, here we can stop the running program.
       BackgroundFetch.finish(taskId);
     });
   }

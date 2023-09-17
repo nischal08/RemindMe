@@ -18,7 +18,6 @@ class DatabaseHelper {
   static getBoxItem(
       {required String key, required String boxId}) async {
     var box = await Hive.openBox(boxId);
-        log(box.get(key, defaultValue: null).toString());
     return box.get(key, defaultValue: null);
   }
 

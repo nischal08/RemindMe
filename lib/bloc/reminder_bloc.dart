@@ -4,7 +4,7 @@ import 'package:remind_me/bloc/events/reminder_event.dart';
 import 'package:remind_me/data/response/app_response.dart';
 import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/repository/database_repository.dart';
-
+//These logic is for adding, deleting, editing the reminder in the hive database
 class ReminderBloc extends Bloc<ReminderEvent,
     AppResponse<Map<DateTime, List<ReminderModel>>>> {
   ReminderBloc() : super(AppResponse.loading({})) {
@@ -18,7 +18,6 @@ class ReminderBloc extends Bloc<ReminderEvent,
         DatabaseRepository.addReminders(state.data!).then((value) {
           emit(AppResponse.completed(state.data));
         }).onError((error, stackTrace) {
-          log(error.toString());
           emit(AppResponse.error(error.toString()));
         });
       },
@@ -33,7 +32,6 @@ class ReminderBloc extends Bloc<ReminderEvent,
         DatabaseRepository.addReminders(state.data!).then((value) {
           emit(AppResponse.completed(state.data));
         }).onError((error, stackTrace) {
-          log(error.toString());
           emit(AppResponse.error(error.toString()));
         });
       },
@@ -50,7 +48,6 @@ class ReminderBloc extends Bloc<ReminderEvent,
         DatabaseRepository.addReminders(state.data!).then((value) {
           emit(AppResponse.completed(state.data));
         }).onError((error, stackTrace) {
-          log(error.toString());
           emit(AppResponse.error(error.toString()));
         });
       },
@@ -66,7 +63,6 @@ class ReminderBloc extends Bloc<ReminderEvent,
           });
           emit(AppResponse.completed(newState));
         }).onError((error, stackTrace) {
-          log(error.toString(), name: "Reminder Bloc");
           emit(AppResponse.error(error.toString()));
         });
       },

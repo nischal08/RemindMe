@@ -78,9 +78,6 @@ class ApiManager {
               .timeout(timeoutDuration);
           break;
         case RequestType.postWithHeaders:
-          log("From Post with postWithHeaders!!!");
-          log({...heading, ...headers}.toString());
-          log("From Post with postWithHeaders!!!");
           resp = await _client
               .post(
                 url,
@@ -93,9 +90,6 @@ class ApiManager {
               .timeout(timeoutDuration);
           break;
         case RequestType.postWithOnlyHeaders:
-          log("From Post with postWithHeaders!!!");
-          log({...heading, ...headers}.toString());
-          log("From Post with postWithHeaders!!!");
           resp = await _client
               .post(
                 url,
@@ -139,7 +133,6 @@ class ApiManager {
       // } else if (ex.response!.data["email"] != null) {
       //   throw ex.response!.data["email"][0];
       // } else
-      // log((ex.response!.data[0]), name: "rhino client");
       // if (ex.response!.data[0] != null) {
       // throw ex.response!.data[0];
       // }
@@ -167,12 +160,10 @@ class ApiManager {
     switch (response.statusCode) {
       case 200:
         dynamic responseJson = response.data;
-        // log(responseJson.toString(), name: "Api Response");
         return responseJson;
 
       case 201:
         dynamic responseJson = response.data;
-        log(responseJson.toString());
         return responseJson;
 
       case 400:

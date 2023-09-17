@@ -25,7 +25,6 @@ class ReminderItem extends StatelessWidget {
     return Dismissible(
       key: Key(reminder.toString()),
       onDismissed: (direction) {
-        log(selectedCalendarDate.toString(), name: "Dissmible");
         context
             .read<ReminderBloc>()
             .add(DeleteReminderEvent(selectedCalendarDate, reminder: reminder));
