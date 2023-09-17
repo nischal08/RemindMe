@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +8,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remind_me/bloc/reminder_bloc.dart';
+import 'package:remind_me/bloc/weather_bloc.dart';
 import 'package:remind_me/data/background/background_event_fetch.dart';
 import 'package:remind_me/data/enum/reminder_priority.dart';
 import 'package:remind_me/models/reminder_model.dart';
-import 'package:remind_me/screens/home_navigation_screen.dart';
 import 'package:remind_me/screens/reminder_screen.dart';
 import 'package:remind_me/screens/splash_screen.dart';
 import 'package:remind_me/styles/themes.dart';
@@ -99,7 +98,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-   
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('logo');
     final DarwinInitializationSettings initializationSettingsDarwin =
@@ -117,6 +115,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => ReminderBloc(),
+        ),
+        BlocProvider(
+          create: (context) => WeatherBloc(),
         ),
       ],
       child: ScreenUtilInit(

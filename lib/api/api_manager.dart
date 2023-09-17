@@ -167,7 +167,7 @@ class ApiManager {
     switch (response.statusCode) {
       case 200:
         dynamic responseJson = response.data;
-        log(responseJson.toString(), name: "Api Response");
+        // log(responseJson.toString(), name: "Api Response");
         return responseJson;
 
       case 201:

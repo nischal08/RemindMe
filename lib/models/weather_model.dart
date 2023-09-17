@@ -82,11 +82,8 @@ class Days {
     required this.solarradiation,
     required this.solarenergy,
     required this.uvindex,
-    required this.severerisk,
     required this.sunrise,
-    required this.sunriseEpoch,
     required this.sunset,
-    required this.sunsetEpoch,
     required this.moonphase,
     required this.conditions,
     required this.description,
@@ -100,16 +97,16 @@ class Days {
   late final double? tempmax;
   late final double? tempmin;
   late final double? temp;
-  late final int? feelslikemax;
+  late final double? feelslikemax;
   late final double? feelslikemin;
-  late final int? feelslike;
+  late final double? feelslike;
   late final double? dew;
   late final double? humidity;
   late final double? precip;
-  late final int? precipprob;
+  late final double? precipprob;
   late final double? precipcover;
   late final List<String> preciptype;
-  late final int? snow;
+  late final double? snow;
   late final double? snowdepth;
   late final double? windgust;
   late final double? windspeed;
@@ -118,13 +115,10 @@ class Days {
   late final double? cloudcover;
   late final double? visibility;
   late final double? solarradiation;
-  late final int? solarenergy;
-  late final int uvindex;
-  late final int severerisk;
+  late final double? solarenergy;
+  late final double uvindex;
   late final String sunrise;
-  late final int sunriseEpoch;
   late final String sunset;
-  late final int sunsetEpoch;
   late final double moonphase;
   late final String conditions;
   late final String description;
@@ -159,11 +153,8 @@ class Days {
     solarradiation = json['solarradiation'];
     solarenergy = json['solarenergy'];
     uvindex = json['uvindex'];
-    severerisk = json['severerisk'];
     sunrise = json['sunrise'];
-    sunriseEpoch = json['sunriseEpoch'];
     sunset = json['sunset'];
-    sunsetEpoch = json['sunsetEpoch'];
     moonphase = json['moonphase'];
     conditions = json['conditions'];
     description = json['description'];
@@ -200,11 +191,8 @@ class Days {
     data['solarradiation'] = solarradiation;
     data['solarenergy'] = solarenergy;
     data['uvindex'] = uvindex;
-    data['severerisk'] = severerisk;
     data['sunrise'] = sunrise;
-    data['sunriseEpoch'] = sunriseEpoch;
     data['sunset'] = sunset;
-    data['sunsetEpoch'] = sunsetEpoch;
     data['moonphase'] = moonphase;
     data['conditions'] = conditions;
     data['description'] = description;
@@ -238,7 +226,6 @@ class Hours {
     required this.solarradiation,
     required this.solarenergy,
     required this.uvindex,
-    required this.severerisk,
     required this.conditions,
     required this.icon,
     required this.source,
@@ -249,21 +236,20 @@ class Hours {
   late final double? feelslike;
   late final double? humidity;
   late final double? dew;
-  late final int? precip;
-  late final int? precipprob;
-  late final int? snow;
+  late final double? precip;
+  late final double? precipprob;
+  late final double? snow;
   late final double? snowdepth;
   late final List<String>? preciptype;
   late final double? windgust;
-  late final int? windspeed;
+  late final double? windspeed;
   late final double? winddir;
-  late final int? pressure;
+  late final double? pressure;
   late final double? visibility;
-  late final int? cloudcover;
-  late final int? solarradiation;
-  late final int? solarenergy;
-  late final int uvindex;
-  late final int severerisk;
+  late final double? cloudcover;
+  late final double? solarradiation;
+  late final double? solarenergy;
+  late final double uvindex;
   late final String conditions;
   late final String icon;
   late final String source;
@@ -289,7 +275,6 @@ class Hours {
     solarradiation = json['solarradiation'];
     solarenergy = json['solarenergy'];
     uvindex = json['uvindex'];
-    severerisk = json['severerisk'];
     conditions = json['conditions'];
     icon = json['icon'];
     source = json['source'];
@@ -317,7 +302,6 @@ class Hours {
     data['solarradiation'] = solarradiation;
     data['solarenergy'] = solarenergy;
     data['uvindex'] = uvindex;
-    data['severerisk'] = severerisk;
     data['conditions'] = conditions;
     data['icon'] = icon;
     data['source'] = source;
@@ -338,7 +322,6 @@ class CurrentConditions {
     required this.snow,
     required this.snowdepth,
     required this.preciptype,
-    required this.windgust,
     required this.windspeed,
     required this.winddir,
     required this.pressure,
@@ -347,15 +330,12 @@ class CurrentConditions {
     required this.solarradiation,
     required this.solarenergy,
     required this.uvindex,
-    required this.severerisk,
     required this.conditions,
     required this.icon,
     required this.stations,
     required this.source,
     required this.sunrise,
-    required this.sunriseEpoch,
     required this.sunset,
-    required this.sunsetEpoch,
     required this.moonphase,
   });
   late final String datetime;
@@ -363,30 +343,26 @@ class CurrentConditions {
   late final double temp;
   late final double feelslike;
   late final double humidity;
-  late final int dew;
+  late final double dew;
   late final double precip;
-  late final int precipprob;
-  late final int snow;
+  late final double precipprob;
+  late final double snow;
   late final double snowdepth;
   late final List<String> preciptype;
-  late final double windgust;
   late final double windspeed;
   late final double winddir;
-  late final int pressure;
+  late final double pressure;
   late final double visibility;
   late final double cloudcover;
-  late final int solarradiation;
+  late final double solarradiation;
   late final double solarenergy;
-  late final int uvindex;
-  late final int severerisk;
+  late final double uvindex;
   late final String conditions;
   late final String icon;
   late final List<dynamic> stations;
   late final String source;
   late final String sunrise;
-  late final int sunriseEpoch;
   late final String sunset;
-  late final int sunsetEpoch;
   late final double moonphase;
 
   CurrentConditions.fromJson(Map<String, dynamic> json) {
@@ -401,7 +377,6 @@ class CurrentConditions {
     snow = json['snow'];
     snowdepth = json['snowdepth'];
     preciptype = List.castFrom<dynamic, String>(json['preciptype']);
-    windgust = json['windgust'];
     windspeed = json['windspeed'];
     winddir = json['winddir'];
     pressure = json['pressure'];
@@ -410,15 +385,12 @@ class CurrentConditions {
     solarradiation = json['solarradiation'];
     solarenergy = json['solarenergy'];
     uvindex = json['uvindex'];
-    severerisk = json['severerisk'];
     conditions = json['conditions'];
     icon = json['icon'];
     stations = List.castFrom<dynamic, dynamic>(json['stations']);
     source = json['source'];
     sunrise = json['sunrise'];
-    sunriseEpoch = json['sunriseEpoch'];
     sunset = json['sunset'];
-    sunsetEpoch = json['sunsetEpoch'];
     moonphase = json['moonphase'];
   }
 
@@ -435,7 +407,6 @@ class CurrentConditions {
     data['snow'] = snow;
     data['snowdepth'] = snowdepth;
     data['preciptype'] = preciptype;
-    data['windgust'] = windgust;
     data['windspeed'] = windspeed;
     data['winddir'] = winddir;
     data['pressure'] = pressure;
@@ -444,15 +415,12 @@ class CurrentConditions {
     data['solarradiation'] = solarradiation;
     data['solarenergy'] = solarenergy;
     data['uvindex'] = uvindex;
-    data['severerisk'] = severerisk;
     data['conditions'] = conditions;
     data['icon'] = icon;
     data['stations'] = stations;
     data['source'] = source;
     data['sunrise'] = sunrise;
-    data['sunriseEpoch'] = sunriseEpoch;
     data['sunset'] = sunset;
-    data['sunsetEpoch'] = sunsetEpoch;
     data['moonphase'] = moonphase;
     return data;
   }

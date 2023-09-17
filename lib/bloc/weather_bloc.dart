@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:remind_me/api/weather_api.dart';
@@ -17,7 +18,7 @@ class WeatherBloc extends Cubit<AppResponse<WeatherModel>> {
     return await Geolocator.getCurrentPosition();
   }
 
-  Future<void> getWeather(String? locationName) async {
+  Future<void> getWeather([String? locationName]) async {
     final myRepo = WeatherApi();
     emit(AppResponse.loading());
     double latitude;
@@ -29,11 +30,8 @@ class WeatherBloc extends Cubit<AppResponse<WeatherModel>> {
         .replaceAll("[latitude]", latitude.toString())
         .replaceAll("[longitude]", longitude.toString());
     log(url);
-    myRepo.getDatingPerferencesInfo(url).then((WeatherModel value) {
+    myRepo.getWeatherData(url).then((WeatherModel value) {
       emit(AppResponse.completed(value));
-    }).onError((error, stackTrace) {
-      log(error.toString());
-      emit(AppResponse.error(error.toString()));
     });
   }
 }
