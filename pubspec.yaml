@@ -27,6 +27,9 @@ dependencies:
   build_runner: ^2.4.6
   flutter_local_notifications: ^15.1.1
   background_fetch: ^1.2.1
+  google_fonts: ^6.0.0
+  font_awesome_flutter: ^10.5.0
+  geolocator: ^10.0.1
 
 dev_dependencies:
   flutter_test:

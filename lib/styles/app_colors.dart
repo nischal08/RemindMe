@@ -18,4 +18,9 @@ class AppColors {
   static const Color alertTextColor = Color(0xff92400E);
   static const Color alertBgColor = Color(0xffFEF3C7);
   static const Color emergencyTextColor = Color(0xff991B1B);
+    static Color buttonGreyColor = Colors.grey[350]!;
+  static const Color defaultAlertcancelBgColor = Color(0xffFFEBEB);
+  static const Color defaultAlertcancelFgColor = Color(0xffFF0000);
+  static const Color defaultAlertOkBgColor = Color(0xff1E944E);
+
 }

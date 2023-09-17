@@ -12,7 +12,9 @@ import 'package:remind_me/bloc/reminder_bloc.dart';
 import 'package:remind_me/data/background/background_event_fetch.dart';
 import 'package:remind_me/data/enum/reminder_priority.dart';
 import 'package:remind_me/models/reminder_model.dart';
+import 'package:remind_me/screens/home_navigation_screen.dart';
 import 'package:remind_me/screens/reminder_screen.dart';
+import 'package:remind_me/screens/splash_screen.dart';
 import 'package:remind_me/styles/themes.dart';
 
 void main() async {
@@ -97,10 +99,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()!
-        .requestPermission();
+   
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('logo');
     final DarwinInitializationSettings initializationSettingsDarwin =
@@ -138,7 +137,7 @@ class MyApp extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           theme: theme,
-          home: const ReminderScreen(),
+          home: const SplashScreen(),
         ),
       ),
     );

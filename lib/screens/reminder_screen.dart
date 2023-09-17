@@ -81,7 +81,7 @@ class ReminderScreenState extends State<ReminderScreen> {
       log(allReminders.toString());
       titleController.clear();
       descpController.clear();
-      GeneralToast.showToast("Please fill both fields.");
+      GeneralToast.showToast("Successfully saved.");
       if (context.mounted) {
         Navigator.pop(context);
       }
@@ -116,14 +116,14 @@ class ReminderScreenState extends State<ReminderScreen> {
         context: context,
         builder: (context) => AlertDialog(
               title: Text(
-                'Set Reminder',
+               isEdit?'Edit Reminder': 'Set Reminder',
                 style: subTitleText,
               ),
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  GeneralTextField(
+                 if(!isEdit) GeneralTextField(
                     onTap: () async {
                       _showDatePicker();
                     },
@@ -135,7 +135,7 @@ class ReminderScreenState extends State<ReminderScreen> {
                     suffixIcon: Icons.calendar_month_outlined,
                     suffixIconColor: AppColors.primaryColor,
                   ),
-                  SizedBox(
+                 if (!isEdit) SizedBox(
                     height: 20.h,
                   ),
                   GeneralTextField(
@@ -331,7 +331,10 @@ class ReminderScreenState extends State<ReminderScreen> {
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.all(16.h),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.r),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.r),
+                        topRight: Radius.circular(16.r),
+                      ),
                       color: Colors.white,
                     ),
                     child: SingleChildScrollView(
@@ -340,7 +343,7 @@ class ReminderScreenState extends State<ReminderScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  height: 32.h,
+                                  height: 26.h,
                                 ),
                                 SvgPicture.asset(AppImage.noReminderImage,
                                     height: 200),
