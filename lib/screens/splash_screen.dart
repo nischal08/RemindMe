@@ -98,6 +98,7 @@ class _SplashScreenState extends State<SplashScreen>
           iconImage: AppImage.alertIcon,
           isDismissible: false,
           enableDrag: false,
+          okBgColor: AppColors.primaryColor,
           title: "Handle Permisson",
           description: Platform.isIOS
               ? "Access to your current location is vital for generating a weather data based on your proximity and send reminder notifications. If you do not grant permission, we won't be able to provide you with a personalized list of merchants. Please tap 'OK' to proceed and enable to offer you the best possible experience."

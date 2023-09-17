@@ -6,7 +6,6 @@ import 'package:remind_me/styles/styles.dart';
 import 'package:remind_me/widgets/general_elevated_button.dart';
 import 'package:remind_me/widgets/general_text_button.dart';
 
-
 class AlertBottomSheet {
   static showAlertBottomSheet(BuildContext context,
       {bool isSpacious = false,
@@ -51,7 +50,7 @@ class AlertBottomSheet {
             borderRadius: 8.r,
             isSmallText: true,
             bgColor: okBgColor ?? AppColors.defaultAlertOkBgColor,
-            title: okTitle ?? "Ok",
+            title: okTitle ?? "OK",
           );
 
     Widget cancelButton = GeneralElevatedButton(
@@ -140,7 +139,7 @@ class AlertBottomSheet {
                     borderRadius: BorderRadius.circular(
                       50.r,
                     ),
-                    color: Colors.white,
+                    color: AppColors.whiteColor,
                   ),
                   padding: const EdgeInsets.all(AppSizes.padding / 2),
                   child: Image.asset(
