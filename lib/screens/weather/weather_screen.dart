@@ -173,7 +173,7 @@ class WeatherScreenState extends State<WeatherScreen> {
                           '$currTemp˚C', //curent temperature
                           style: bodyText.copyWith(
                             color: Colors.white,
-                            fontSize: size.height * 0.13,
+                            fontSize: 50.sp,
                           ),
                         ),
                       ),

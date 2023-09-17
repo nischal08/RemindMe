@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:remind_me/data/enum/request_type.dart';
 import 'package:remind_me/data/exception/app_exceptions.dart';

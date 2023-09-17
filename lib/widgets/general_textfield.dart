@@ -86,10 +86,10 @@ class GeneralTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _GeneralTextFieldState createState() => _GeneralTextFieldState();
+  GeneralTextFieldState createState() => GeneralTextFieldState();
 }
 
-class _GeneralTextFieldState extends State<GeneralTextField> {
+class GeneralTextFieldState extends State<GeneralTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
