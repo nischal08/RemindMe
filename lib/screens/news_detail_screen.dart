@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:remind_me/data/image_constants.dart';
 import 'package:remind_me/models/news_model.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/app_sizes.dart';
@@ -24,9 +26,26 @@ class NewsDetailScreen extends StatelessWidget {
           Container(
             alignment: Alignment.topCenter,
             height: MediaQuery.of(context).size.height / 3,
-            child: Image.network(
-              articles.urlToImage!,
-              // fit: BoxFit.cover,
+            child: CachedNetworkImage(
+              color: AppColors.blackColor,
+              imageUrl: articles.urlToImage!,
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+              imageBuilder: (context, imageProvider) {
+                return Image(
+                  image: imageProvider,
+                );
+              },
+               progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  const CircularProgressIndicator(
+                color: Colors.transparent,
+                strokeWidth: 0,
+              ),
+              errorWidget: (context, url, error) {
+                return Image.asset(AppImage.logoImage, fit: BoxFit.contain,
+                  height: MediaQuery.of(context).size.height / 5,
+                );
+              },
             ),
           ),
           Positioned.fill(

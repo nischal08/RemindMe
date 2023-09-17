@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:remind_me/bloc/news_bloc.dart';
+import 'package:remind_me/data/image_constants.dart';
 import 'package:remind_me/data/response/app_response.dart';
 import 'package:remind_me/data/response/status.dart';
 import 'package:remind_me/models/news_model.dart';
@@ -41,7 +43,9 @@ class _NewsScreenState extends State<NewsScreen> {
         title: const Text("News"),
       ),
       body: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: () async {
+          await context.read<NewsBloc>().getNews();
+        },
         child:
             BlocBuilder<NewsBloc, AppResponse<NewsModel>>(builder: (_, state) {
           switch (state.status) {
@@ -95,7 +99,7 @@ class NewsItem extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 4,
+          flex: 5,
           child: Column(
             children: [
               Text(
@@ -125,18 +129,49 @@ class NewsItem extends StatelessWidget {
           width: 16.w,
         ),
         Expanded(
-          flex: 3,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.r),
-              child: Image.network(
-                articles.urlToImage!,
-                width: 200.w,
-              ),
-            ),
+          flex: 4,
+          child: CachedNetworkImage(
+            imageUrl: articles.urlToImage!,
+            imageBuilder: (context, imageProvider) {
+              return Container(
+                height: 80.h,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.r),
+                color: Colors.green,
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            },
+            progressIndicatorBuilder: (context, url, progress) {
+              progress.downloaded;
+
+              return Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  Container(
+                    // height: 90.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5.r),
+                          topRight: Radius.circular(5.r)),
+                      image: const DecorationImage(
+                        opacity: 0.4,
+                        image: AssetImage(AppImage.logoImage),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  ),
+                  const CircularProgressIndicator(),
+                ],
+              );
+            },
+            errorWidget: (context, url, error) {
+              return Image.asset(AppImage.logoImage, fit: BoxFit.contain, height: 90.h,);
+            },
           ),
         )
       ],

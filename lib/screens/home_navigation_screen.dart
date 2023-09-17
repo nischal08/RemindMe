@@ -8,7 +8,8 @@ import 'package:remind_me/screens/weather_screen.dart';
 import 'package:remind_me/styles/app_colors.dart';
 
 class HomeNavigationScreen extends StatefulWidget {
-  const HomeNavigationScreen({Key? key}) : super(key: key);
+  final DateTime? datetime;
+  const HomeNavigationScreen({Key? key, this.datetime}) : super(key: key);
 
   @override
   State<HomeNavigationScreen> createState() => _HomeNavigationScreenState();
@@ -16,12 +17,8 @@ class HomeNavigationScreen extends StatefulWidget {
 
 class _HomeNavigationScreenState extends State<HomeNavigationScreen> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    ReminderScreen(),
-    WeatherScreen(),
-    NewsScreen()
-  ];
 
+  late List<Widget> _widgetOptions;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -30,6 +27,11 @@ class _HomeNavigationScreenState extends State<HomeNavigationScreen> {
 
   @override
   void initState() {
+    _widgetOptions = <Widget>[
+      ReminderScreen(datetime: widget.datetime),
+      const WeatherScreen(),
+      const NewsScreen()
+    ];
     super.initState();
   }
 
@@ -68,7 +70,7 @@ class _HomeNavigationScreenState extends State<HomeNavigationScreen> {
               label: 'Weather',
             ),
             BottomNavigationBarItem(
-               icon: Icon(
+              icon: Icon(
                 Icons.newspaper_outlined,
                 size: 24.h,
               ),

@@ -16,11 +16,11 @@ class NewsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['status'] = status;
-    _data['totalResults'] = totalResults;
-    _data['articles'] = articles.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['status'] = status;
+    data['totalResults'] = totalResults;
+    data['articles'] = articles.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -56,16 +56,16 @@ class Articles {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['source'] = source.toJson();
-    _data['author'] = author;
-    _data['title'] = title;
-    _data['description'] = description;
-    _data['url'] = url;
-    _data['urlToImage'] = urlToImage;
-    _data['publishedAt'] = publishedAt;
-    _data['content'] = content;
-    return _data;
+    final data = <String, dynamic>{};
+    data['source'] = source.toJson();
+    data['author'] = author;
+    data['title'] = title;
+    data['description'] = description;
+    data['url'] = url;
+    data['urlToImage'] = urlToImage;
+    data['publishedAt'] = publishedAt;
+    data['content'] = content;
+    return data;
   }
 }
 
@@ -83,9 +83,9 @@ class Source {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['name'] = name;
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    return data;
   }
 }

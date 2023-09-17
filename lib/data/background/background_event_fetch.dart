@@ -7,7 +7,7 @@ import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/repository/database_repository.dart';
 
 class BackgroundEventFetch {
-  static Future<void> backgroundFetchHeadlessTask(taskId) async {
+  static Future<void> showNotification() async {
     log('[BackgroundFetch] Headless event received.');
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('reminderChannel', 'notificationChannel',
@@ -39,23 +39,46 @@ class BackgroundEventFetch {
             .toString()
             .replaceAll("000", "00Z"));
     for (var i = 0; i < listData.length; i++) {
-      if (listData[i].isAfter(todayConvertedDate) ||
-          (listData[i].day == todayConvertedDate.day &&
-              listData[i].month == todayConvertedDate.month &&
-              listData[i].year == todayConvertedDate.year)) {
+      if (((listData[i].day == todayConvertedDate.day ||
+              listData[i].day == todayConvertedDate.day + 1) &&
+          listData[i].month == todayConvertedDate.month &&
+          listData[i].year == todayConvertedDate.year)) {
         for (ReminderModel reminder in newRemindersList[listData[i]]!) {
           await flutterLocalNotificationsPlugin.show(
             i,
             reminder.title,
             reminder.descp,
             notificationDetails,
-            payload: "Hello",
+            payload:  listData[i].toString(),
           );
         }
         break;
       }
     }
+  }
 
-    BackgroundFetch.finish(taskId);
+  static initiateBackgroundFetch() {
+    BackgroundFetch.configure(
+        BackgroundFetchConfig(
+          minimumFetchInterval: 15,
+          stopOnTerminate: false,
+          startOnBoot: true,
+          enableHeadless: true,
+        ), (String taskId) async {
+      if (taskId == "flutter_background_fetch") {
+        await showNotification();
+      }
+      log('[BackgroundFetch] Event received.');
+      // <-- Event callback
+      // This callback is typically fired every 15 minutes while in the background.
+      // IMPORTANT:  You must signal completion of your fetch task or the OS could
+      // punish your app for spending much time in the background.
+      BackgroundFetch.finish(taskId);
+    }, (String taskId) async {
+      // <-- Timeout callback
+      log("[BackgroundFetch] TIMEOUT: $taskId");
+      // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
+      BackgroundFetch.finish(taskId);
+    });
   }
 }

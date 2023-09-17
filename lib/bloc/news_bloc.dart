@@ -22,7 +22,7 @@ class NewsBloc extends Cubit<AppResponse<NewsModel>> {
     }
 
     if (isOnline) {
-      myRepo.getNewsData().then((NewsModel value) {
+      await myRepo.getNewsData().then((NewsModel value) {
         DatabaseRepository.addNewsData(value.toJson());
         emit(AppResponse.completed(value));
       });

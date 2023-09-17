@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:remind_me/bloc/events/reminder_event.dart';
 import 'package:remind_me/bloc/reminder_bloc.dart';
+import 'package:remind_me/data/background/background_event_fetch.dart';
 import 'package:remind_me/data/image_constants.dart';
 import 'package:remind_me/data/response/app_response.dart';
 import 'package:remind_me/models/reminder_model.dart';
@@ -21,7 +22,8 @@ import '../data/response/status.dart';
 import '../utils/general_toast.dart';
 
 class ReminderScreen extends StatefulWidget {
-  const ReminderScreen({Key? key}) : super(key: key);
+  final DateTime? datetime;
+  const ReminderScreen({this.datetime, Key? key}) : super(key: key);
 
   @override
   ReminderScreenState createState() => ReminderScreenState();
@@ -42,6 +44,9 @@ class ReminderScreenState extends State<ReminderScreen> {
   @override
   void initState() {
     selectedCalendarDate = _focusedCalendarDate;
+    if (widget.datetime != null) {
+      selectedCalendarDate = widget.datetime!;
+    }
     _convertSelectedDateToTzDate();
     allReminders = {};
     BlocProvider.of<ReminderBloc>(context).add(GetReminderEvent());
@@ -116,28 +121,30 @@ class ReminderScreenState extends State<ReminderScreen> {
         context: context,
         builder: (context) => AlertDialog(
               title: Text(
-               isEdit?'Edit Reminder': 'Set Reminder',
+                isEdit ? 'Edit Reminder' : 'Set Reminder',
                 style: subTitleText,
               ),
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                 if(!isEdit) GeneralTextField(
-                    onTap: () async {
-                      _showDatePicker();
-                    },
-                    readonly: true,
-                    textInputAction: TextInputAction.next,
-                    keywordType: TextInputType.text,
-                    validate: (val) {},
-                    controller: dateInput,
-                    suffixIcon: Icons.calendar_month_outlined,
-                    suffixIconColor: AppColors.primaryColor,
-                  ),
-                 if (!isEdit) SizedBox(
-                    height: 20.h,
-                  ),
+                  if (!isEdit)
+                    GeneralTextField(
+                      onTap: () async {
+                        _showDatePicker();
+                      },
+                      readonly: true,
+                      textInputAction: TextInputAction.next,
+                      keywordType: TextInputType.text,
+                      validate: (val) {},
+                      controller: dateInput,
+                      suffixIcon: Icons.calendar_month_outlined,
+                      suffixIconColor: AppColors.primaryColor,
+                    ),
+                  if (!isEdit)
+                    SizedBox(
+                      height: 20.h,
+                    ),
                   GeneralTextField(
                       textInputAction: TextInputAction.next,
                       keywordType: TextInputType.text,
@@ -203,6 +210,7 @@ class ReminderScreenState extends State<ReminderScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          BackgroundEventFetch.showNotification();
           _showAddAndEditEventDialog();
         },
         label: Text(
