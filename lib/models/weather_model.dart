@@ -1,6 +1,5 @@
 class WeatherModel {
   WeatherModel({
-    required this.queryCost,
     required this.latitude,
     required this.longitude,
     required this.resolvedAddress,
@@ -12,7 +11,6 @@ class WeatherModel {
     required this.alerts,
     required this.currentConditions,
   });
-  late final int queryCost;
   late final double latitude;
   late final double longitude;
   late final String resolvedAddress;
@@ -25,7 +23,6 @@ class WeatherModel {
   late final CurrentConditions currentConditions;
 
   WeatherModel.fromJson(Map<String, dynamic> json) {
-    queryCost = json['queryCost'];
     latitude = json['latitude'];
     longitude = json['longitude'];
     resolvedAddress = json['resolvedAddress'];
@@ -40,7 +37,6 @@ class WeatherModel {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['queryCost'] = queryCost;
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['resolvedAddress'] = resolvedAddress;

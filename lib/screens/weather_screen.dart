@@ -18,10 +18,10 @@ class WeatherScreen extends StatefulWidget {
   const WeatherScreen({Key? key}) : super(key: key);
 
   @override
-  _WeatherScreenState createState() => _WeatherScreenState();
+  WeatherScreenState createState() => WeatherScreenState();
 }
 
-class _WeatherScreenState extends State<WeatherScreen> {
+class WeatherScreenState extends State<WeatherScreen> {
   @override
   void initState() {
     // TODO: implement initState
@@ -269,84 +269,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             Padding(
                               padding: EdgeInsets.all(size.width * 0.005),
                               child: Column(
-                                children: [
-                                  ...state.data!.days
-                                      .map((e) => buildSevenDayForecast(
-                                            DateTime.parse(e.datetime)
-                                                        .toIso8601String()
-                                                        .substring(0, 10) ==
-                                                    DateTime.now()
-                                                        .toIso8601String()
-                                                ? "Today"
-                                                : DateFormat.E().format(
-                                                    DateTime.parse(
-                                                        e.datetime)), //day
-                                            e.tempmin!
-                                                .floor(), //min temperature
-                                            e.tempmax!
-                                                .floor(), //max temperature
-                                            getIcons(e.icon), //weather icon
-                                            size,
-                                            isDarkMode,
-                                          ))
-                                      .toList(),
-                                  buildSevenDayForecast(
-                                    "Wed",
-                                    -5,
-                                    5,
-                                    FontAwesomeIcons.sun,
-                                    size,
-                                    isDarkMode,
-                                  ),
-                                  buildSevenDayForecast(
-                                    "Thu",
-                                    -2,
-                                    7,
-                                    FontAwesomeIcons.cloudRain,
-                                    size,
-                                    isDarkMode,
-                                  ),
-                                  buildSevenDayForecast(
-                                    "Fri",
-                                    3,
-                                    10,
-                                    FontAwesomeIcons.sun,
-                                    size,
-                                    isDarkMode,
-                                  ),
-                                  buildSevenDayForecast(
-                                    "San",
-                                    5,
-                                    12,
-                                    FontAwesomeIcons.sun,
-                                    size,
-                                    isDarkMode,
-                                  ),
-                                  buildSevenDayForecast(
-                                    "Sun",
-                                    4,
-                                    7,
-                                    FontAwesomeIcons.cloud,
-                                    size,
-                                    isDarkMode,
-                                  ),
-                                  buildSevenDayForecast(
-                                    "Mon",
-                                    -2,
-                                    1,
-                                    FontAwesomeIcons.cloud,
-                                    size,
-                                    isDarkMode,
-                                  ),
-                                  buildSevenDayForecast(
-                                    "Tues",
-                                    0,
-                                    3,
-                                    FontAwesomeIcons.cloudRain,
-                                    size,
-                                    isDarkMode,
-                                  ),
-                                ],
+                                children: state.data!.days
+                                    .map((e) => buildSevenDayForecast(
+                                          DateTime.parse(e.datetime)
+                                                      .toIso8601String()
+                                                      .substring(0, 10) ==
+                                                  DateTime.now()
+                                                      .toIso8601String()
+                                              ? "Today"
+                                              : DateFormat.E().format(
+                                                  DateTime.parse(
+                                                      e.datetime)), //day
+                                          e.tempmin!.floor(), //min temperature
+                                          e.tempmax!.floor(), //max temperature
+                                          getIcons(e.icon), //weather icon
+                                          size,
+                                          isDarkMode,
+                                        ))
+                                    .toList(),
                               ),
                             ),
                           ],

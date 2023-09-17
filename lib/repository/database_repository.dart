@@ -4,10 +4,9 @@ import 'package:remind_me/repository/database_helper.dart';
 
 class DatabaseRepository {
   static Future<Map> getReminders() async {
-    final Map reminderData =
-        await DatabaseHelper.getBoxItem(
-                key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId) ??
-            {};
+    final Map reminderData = await DatabaseHelper.getBoxItem(
+            key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId) ??
+        {};
 
     return reminderData;
   }
@@ -16,6 +15,16 @@ class DatabaseRepository {
       Map<DateTime, List<ReminderModel>> data) async {
     await DatabaseHelper.addBoxItem(
         key: AppKeys.reminderKey, boxId: AppKeys.reminderBoxId, value: data);
+  }
+
+  static Future<void> addWeatherData(Map<String, dynamic> data) async {
+    await DatabaseHelper.addBoxItem(
+        key: AppKeys.weatherKey, boxId: AppKeys.weatherBoxId, value: data);
+  }
+
+  static Future<Map?> getWeatherData() async {
+    return await DatabaseHelper.getBoxItem(
+        key: AppKeys.weatherKey, boxId: AppKeys.weatherBoxId);
   }
 
   static Future<void> deleteAllReminders() async {
