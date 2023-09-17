@@ -54,7 +54,6 @@ class _SplashScreenState extends State<SplashScreen>
     super.didChangeDependencies();
     if (isInit) {
       WidgetsBinding.instance.addObserver(this);
-      // Set Current location here
       if (mounted) {
         _onSubmit();
       }
@@ -72,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   _getPermission({bool showNotification = false}) async {
-   await flutterLocalNotificationsPlugin
+    await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()!
         .requestPermission();
@@ -88,7 +87,6 @@ class _SplashScreenState extends State<SplashScreen>
                 (await Permission.notification.status ==
                     PermissionStatus.limited)))) {
       if (context.mounted) {
-        // Set Current location here
         _navigateCall();
       }
     } else {

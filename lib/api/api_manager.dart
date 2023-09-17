@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:remind_me/data/enum/request_type.dart';
 import 'package:remind_me/data/exception/app_exceptions.dart';
@@ -22,7 +23,7 @@ class ApiManager {
     );
   }
   Future request({
-    required RequestType requestTypeEnum,
+    required RequestType requestType,
     // dynamic heading = Nothing,
     required String url,
     dynamic parameter,
@@ -40,7 +41,7 @@ class ApiManager {
     // }
 
     try {
-      switch (requestTypeEnum) {
+      switch (requestType) {
         case RequestType.get:
           resp = await _client
               .get(
