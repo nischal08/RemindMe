@@ -53,30 +53,16 @@ In addition to its robust task management capabilities, our app goes the extra m
 
 ## Screenshots
 
-Here are some screenshots of the MyPay Payment Gateway integrated into a ecommerce Flutter app:
+I have attached screenshot in raw folder of the root application.
 
-<table>
-  <tr>
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot1.png" alt="Example Order Screen" width="400"/>
-    </td>
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot2.png" alt="Payment Screen" width="400"/>
-    </td>
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot3.png" alt="Example Order Screen" width="400"/>
-    </td>
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot4.png" alt="Payment Screen" width="400"/>
-    </td>
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot5.png" alt="Example Order Screen" width="400"/>
-    </td>
-  </tr>
-   <tr>
-    
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot6.png" alt="Payment Screen" width="400"/>
-    </td>
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot7.png" alt="Example Order Screen" width="400"/>
-    </td>
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot8.png" alt="Payment Screen" width="400"/>
-    </td>
-    <td><img src="https://github.com/nischal08/RemindMe/-/raw/main/raw/screenshot9.png" alt="Payment Screen" width="400"/>
-    </td>
-  </tr>
-</table>
+## Application Download
+
+<a href="https://drive.google.com/file/d/1aavUUJ0I-7r6IHTmyiaqUQLXQw03xANc/view?usp=sharing"> Download App </a>
+
+
+
+## Contact
+
+If you have any questions or suggestions, feel free
+to [contact me on LinkedIn](https://www.linkedin.com/in/nirajkaranjeet/).
+
