@@ -210,7 +210,6 @@ class ReminderScreenState extends State<ReminderScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          BackgroundEventFetch.showNotification();
           _showAddAndEditEventDialog();
         },
         label: Text(
