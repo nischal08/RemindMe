@@ -26,14 +26,14 @@ void main() async {
   runApp(const MyApp());
   BackgroundFetch.configure(
       BackgroundFetchConfig(
-          minimumFetchInterval: 1,
+          minimumFetchInterval: 15,
           stopOnTerminate: false,
           startOnBoot: true,
           enableHeadless: true), (String taskId) async {
     await BackgroundEventFetch.backgroundFetchHeadlessTask(taskId);
     log('[BackgroundFetch] Event received.');
     // <-- Event callback
-    // This callback is typically fired every 1 minutes while in the background.
+    // This callback is typically fired every 15 minutes while in the background.
     // IMPORTANT:  You must signal completion of your fetch task or the OS could
     // punish your app for spending much time in the background.
     BackgroundFetch.finish(taskId);

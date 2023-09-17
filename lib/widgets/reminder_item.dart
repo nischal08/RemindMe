@@ -13,10 +13,11 @@ import 'package:remind_me/utils/general_toast.dart';
 class ReminderItem extends StatelessWidget {
   final ReminderModel reminder;
   final DateTime selectedCalendarDate;
+  final VoidCallback onEdit;
   const ReminderItem(
     this.selectedCalendarDate, {
     super.key,
-    required this.reminder,
+    required this.reminder, required this.onEdit,
   });
 
   @override
@@ -60,7 +61,7 @@ class ReminderItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: onEdit,
               icon: const Icon(Icons.edit_calendar_outlined),
               color: AppColors.primaryColor,
             ),

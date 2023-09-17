@@ -23,6 +23,21 @@ class ReminderBloc extends Bloc<ReminderEvent,
         });
       },
     );
+    on<EditReminderEvent>(
+      (event, emit) async {
+        if (state.data![event.selectedCalendarDate] != null) {
+          state.data![event.selectedCalendarDate]!.removeAt(event.itemIndex);
+          state.data![event.selectedCalendarDate]!
+              .insert(event.itemIndex, event.reminder);
+        }
+        DatabaseRepository.addReminders(state.data!).then((value) {
+          emit(AppResponse.completed(state.data));
+        }).onError((error, stackTrace) {
+          log(error.toString());
+          emit(AppResponse.error(error.toString()));
+        });
+      },
+    );
 
     on<DeleteReminderEvent>(
       (event, emit) async {

@@ -7,7 +7,6 @@ import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/repository/database_repository.dart';
 
 class BackgroundEventFetch {
-  @pragma('vm:entry-point')
   static Future<void> backgroundFetchHeadlessTask(taskId) async {
     log('[BackgroundFetch] Headless event received.');
     const AndroidNotificationDetails androidNotificationDetails =

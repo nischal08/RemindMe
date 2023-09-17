@@ -118,15 +118,14 @@ class _GeneralTextFieldState extends State<GeneralTextField> {
         autofillHints: widget.autoFillHints,
         inputFormatters: [
           LengthLimitingTextInputFormatter(widget.maxLength),
-          FilteringTextInputFormatter.deny(
-            RegExp(
-                r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])'),
-          ),
-          LengthLimitingTextInputFormatter(widget.maxLength),
-          if (widget.isNumber)
-            FilteringTextInputFormatter.allow(
-              RegExp(r'[\d.\d]+$'),
-            )
+          // FilteringTextInputFormatter.deny(
+          //   RegExp(
+          //       r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])'),
+          // ),
+          // if (widget.isNumber)
+          //   FilteringTextInputFormatter.allow(
+          //     RegExp(r'[\d.\d]+$'),
+          //   )
         ],
         obscureText: widget.obscureText,
         decoration: InputDecoration(

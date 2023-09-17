@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:remind_me/bloc/events/reminder_event.dart';
 import 'package:remind_me/bloc/reminder_bloc.dart';
-import 'package:remind_me/data/background/background_event_fetch.dart';
 import 'package:remind_me/data/image_constants.dart';
 import 'package:remind_me/data/response/app_response.dart';
 import 'package:remind_me/models/reminder_model.dart';
@@ -15,6 +15,7 @@ import 'package:remind_me/styles/styles.dart';
 import 'package:remind_me/widgets/general_textfield.dart';
 import 'package:remind_me/widgets/reminder_item.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 import '../data/enum/reminder_priority.dart';
 import '../data/response/status.dart';
 import '../utils/general_toast.dart';
@@ -67,7 +68,7 @@ class ReminderScreenState extends State<ReminderScreen> {
   // }
 
   _onAddReminder() async {
-    if (titleController.text.isEmpty && descpController.text.isEmpty) {
+    if (titleController.text.isEmpty || descpController.text.isEmpty) {
       GeneralToast.showToast("Please enter title & description");
     } else {
       _convertSelectedDateToTzDate();
@@ -80,10 +81,18 @@ class ReminderScreenState extends State<ReminderScreen> {
       log(allReminders.toString());
       titleController.clear();
       descpController.clear();
-      GeneralToast.showToast("Reminder successfully added.");
+      GeneralToast.showToast("Please fill both fields.");
       if (context.mounted) {
         Navigator.pop(context);
       }
+    }
+  }
+
+  _onEditReminder() {
+    if (titleController.text.isEmpty || descpController.text.isEmpty) {
+      GeneralToast.showToast("Please fill both fields.");
+    } else {
+      Navigator.pop(context, true);
     }
   }
 
@@ -101,9 +110,9 @@ class ReminderScreenState extends State<ReminderScreen> {
     } else {}
   }
 
-  _showAddEventDialog() async {
+  _showAddAndEditEventDialog([bool isEdit = false]) async {
     dateInput.text = DateFormat('yyyy-MM-dd').format(selectedCalendarDate);
-    await showDialog(
+    return await showDialog(
         context: context,
         builder: (context) => AlertDialog(
               title: Text(
@@ -148,7 +157,9 @@ class ReminderScreenState extends State<ReminderScreen> {
               ),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => isEdit
+                      ? Navigator.pop(context, false)
+                      : Navigator.pop(context),
                   child: Text(
                     'Cancel',
                     style: bodyText.copyWith(
@@ -157,11 +168,9 @@ class ReminderScreenState extends State<ReminderScreen> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    _onAddReminder();
-                  },
+                  onPressed: isEdit ? _onEditReminder : _onAddReminder,
                   child: Text(
-                    'Add',
+                    isEdit ? 'Edit' : 'Add',
                     style: bodyText.copyWith(
                       color: AppColors.primaryColor,
                     ),
@@ -194,7 +203,7 @@ class ReminderScreenState extends State<ReminderScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          _showAddEventDialog();
+          _showAddAndEditEventDialog();
         },
         label: Text(
           'Add Reminder',
@@ -361,8 +370,35 @@ class ReminderScreenState extends State<ReminderScreen> {
                                 ),
                                 ..._listOfDayEvents(selectedCalendarDate).map(
                                   (myEvents) => ReminderItem(
-                                      selectedCalendarDate,
-                                      reminder: myEvents),
+                                    selectedCalendarDate,
+                                    reminder: myEvents,
+                                    onEdit: () async {
+                                      titleController.text = myEvents.title;
+                                      descpController.text = myEvents.descp;
+                                      bool canEdit =
+                                          await _showAddAndEditEventDialog(
+                                              true);
+                                      if (canEdit && context.mounted) {
+                                        context.read<ReminderBloc>().add(
+                                              EditReminderEvent(
+                                                  ReminderModel(
+                                                      title:
+                                                          titleController.text,
+                                                      descp:
+                                                          descpController.text,
+                                                      priority:
+                                                          myEvents.priority),
+                                                  itemIndex: _listOfDayEvents(
+                                                          selectedCalendarDate)
+                                                      .indexOf(myEvents),
+                                                  selectedCalendarDate:
+                                                      selectedCalendarDate),
+                                            );
+                                        titleController.clear();
+                                        descpController.clear();
+                                      }
+                                    },
+                                  ),
                                 )
                               ],
                             ),
