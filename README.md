@@ -16,6 +16,44 @@ In addition to its robust task management capabilities, our app goes the extra m
 - Access real-time weather data to make informed decisions about outdoor activities and travel.
 - Enjoy uninterrupted access to your scheduled tasks and reminders, even in areas with limited or no internet connectivity.
 
+## Project Structure
+
+#### Architecture:
+
+The app follows the Model-View-Controller (MVC) architecture for structuring the codebase.
+
+#### Database:
+
+Hive is employed as the database to store both offline JSON data and reminders.
+
+#### Calendar Display:
+
+The app utilizes the TableCalendar package to display a calendar for managing and viewing reminders.
+
+#### State Management:
+
+Bloc is chosen as the primary state management solution, helping manage and coordinate the app's various states.
+
+#### Date Formatting:
+
+The intl package is integrated to handle date formatting within the app.
+
+#### Background Task:
+
+The app employs the background_fetch package to execute tasks in the background, enhancing user experience and app functionality.
+
+#### Location Data:
+
+The app utilizes the geolocator and geocoding packages to access and manage location-related data.
+
+#### API Data Handling:
+
+The Dio package is used for efficient handling of API data, facilitating communication with external services.
+
+#### Permission Handling:
+
+The app leverages the permission_handler package to manage and request permissions as needed to access device features and data.
+
 ## Instructions
 
 - Firstly, when you install the application which is the drive have provided below the first screen is splash screen.
@@ -31,6 +69,7 @@ In addition to its robust task management capabilities, our app goes the extra m
 - These reminder are stored in hive database and showed on state change and on start up of application.
 - The color indication of today is dark indigo where as selected date color is light indigo color.
 - Also, Date which has reminders will show green dot at the bottom as reminder indication.
+- Finally, I have setup background fetch for showing reminder notification in app background when the reminder date nearby.
 
 ### Weather Screen
 
@@ -59,10 +98,7 @@ I have attached screenshot in raw folder of the root application.
 
 <a href="https://drive.google.com/file/d/1aavUUJ0I-7r6IHTmyiaqUQLXQw03xANc/view?usp=sharing"> Download App </a>
 
-
-
 ## Contact
 
 If you have any questions or suggestions, feel free
 to [contact me on LinkedIn](https://www.linkedin.com/in/nirajkaranjeet/).
-
