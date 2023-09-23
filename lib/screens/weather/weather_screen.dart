@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:remind_me/bloc/weather_bloc.dart';
 import 'package:remind_me/data/response/app_response.dart';
 import 'package:remind_me/data/response/status.dart';
@@ -11,6 +13,7 @@ import 'package:remind_me/screens/weather/widgets/daily_forecast_widget.dart';
 import 'package:remind_me/screens/weather/widgets/hourly_forecast_widget.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/styles.dart';
+import 'package:remind_me/widgets/general_elevated_button.dart';
 import 'package:remind_me/widgets/general_error.dart';
 import 'package:remind_me/widgets/general_loading.dart';
 import 'package:remind_me/widgets/general_textfield.dart';
@@ -22,11 +25,77 @@ class WeatherScreen extends StatefulWidget {
   WeatherScreenState createState() => WeatherScreenState();
 }
 
-class WeatherScreenState extends State<WeatherScreen> {
+class WeatherScreenState extends State<WeatherScreen>
+    with WidgetsBindingObserver {
+  bool isPaused = false;
+  bool isDenied = true;
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
-    context.read<WeatherBloc>().getWeather();
+    permisisonCall();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // These are used for coming back to pervious from setting screen without giving the permission
+    switch (state) {
+      case AppLifecycleState.resumed:
+        if (isPaused && mounted) {
+          permisisonCall();
+          FocusManager.instance.primaryFocus?.unfocus();
+          isPaused = false;
+        }
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        isPaused = true;
+        FocusManager.instance.primaryFocus?.unfocus();
+        break;
+      case AppLifecycleState.detached:
+        break;
+      default:
+        break;
+    }
+  }
+
+  permisisonCall() async {
+    LocationPermission requestLocationStatus =
+        await Geolocator.requestPermission();
+
+    if (requestLocationStatus == LocationPermission.always ||
+        requestLocationStatus == LocationPermission.whileInUse) {
+      if (context.mounted) {
+        context.read<WeatherBloc>().getWeather();
+        isDenied = false;
+      }
+    } else {
+      isDenied = true;
+      setState(() {});
+    }
+    // Permission.notification.isDenied.then((value) async {
+    //   isDenied = value;
+    //   setState(() {});
+    //   if (value) {
+    //     await flutterLocalNotificationsPlugin
+    //         .resolvePlatformSpecificImplementation<
+    //             AndroidFlutterLocalNotificationsPlugin>()!
+    //         .requestPermission();
+    //   } else {
+    //     if (context.mounted) {
+    //       context.read<WeatherBloc>().getWeather();
+    //     }
+    //   }
+    // });
   }
 
   final locationNameController = TextEditingController();
@@ -116,6 +185,33 @@ class WeatherScreenState extends State<WeatherScreen> {
       body: BlocBuilder<WeatherBloc, AppResponse<WeatherModel>>(
           builder: (_, state) {
         switch (state.status) {
+          // case Status.LOADING when hasPermission:
+          //   return const GeneralLoading();
+          case Status.LOADING when isDenied:
+            return Padding(
+              padding: EdgeInsets.all(32.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Please press button to accept the required permission in settings for location",
+                    textAlign: TextAlign.center,
+                    style: bodyText.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  GeneralElevatedButton(
+                      title: "Go to Setting",
+                      isMinimumWidth: true,
+                      onPressed: () {
+                        openAppSettings();
+                      })
+                ],
+              ),
+            );
           case Status.LOADING:
             return const GeneralLoading();
           case Status.ERROR:

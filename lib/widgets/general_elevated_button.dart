@@ -61,7 +61,7 @@ class GeneralElevatedButton extends StatelessWidget {
     }
 
     return SizedBox(
-      height: height ?? 56.h,
+      height: height ?? 40.h,
       width:
           width ?? (isMinimumWidth ? null : MediaQuery.of(context).size.width),
       child: ElevatedButton(

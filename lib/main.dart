@@ -17,23 +17,27 @@ import 'package:remind_me/utils/navigation_util.dart';
 
 void main() async {
   await Hive.initFlutter();
+  WidgetsFlutterBinding.ensureInitialized();
   Hive.registerAdapter(ReminderModelAdapter());
   Hive.registerAdapter(ReminderPriorityAdapter());
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   runApp(const MyApp());
-  //This function used to run program on 15 minutes interval on background
-  BackgroundEventFetch.initiateBackgroundFetch();
 }
 
 GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   void onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) async {
     final String? payload = notificationResponse.payload;
@@ -58,6 +62,13 @@ class MyApp extends StatelessWidget {
         ),
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //This function used to run program on 15 minutes interval on background
+    BackgroundEventFetch.initiateBackgroundFetch();
   }
 
   // This widget is the root of your application.
