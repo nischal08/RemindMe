@@ -96,7 +96,7 @@ I have attached screenshot in raw folder of the root application.
 
 ## Application Download
 
-<a href="https://drive.google.com/file/d/1aavUUJ0I-7r6IHTmyiaqUQLXQw03xANc/view?usp=sharing"> Download App </a>
+<a href="https://drive.google.com/file/d/1taXGBSl4YCDbDK2Be957FGzlAreyp24V/view?usp=drive_link"> Download App </a>
 
 ## Contact
 
