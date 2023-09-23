@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:remind_me/bloc/events/reminder_event.dart';
 import 'package:remind_me/bloc/reminder_bloc.dart';
 import 'package:remind_me/data/image_constants.dart';
 import 'package:remind_me/data/response/app_response.dart';
+import 'package:remind_me/main.dart';
 import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/styles.dart';
@@ -36,9 +39,23 @@ class ReminderScreenState extends State<ReminderScreen> {
   final descpController = TextEditingController();
   ReminderPriority currentPriority = ReminderPriority.normal;
   late Map<DateTime, List<ReminderModel>> allReminders;
-
+  late SnackBar snackBar;
   @override
   void initState() {
+    snackBar = SnackBar(
+      duration: const Duration(
+        seconds: 10,
+      ),
+      content: const Text(
+          'Please give notification permission in setting for notification services'),
+      action: SnackBarAction(
+        label: 'Dimiss',
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+    );
+    showSnackbar();
     selectedCalendarDate = _focusedCalendarDate;
     if (widget.datetime != null) {
       selectedCalendarDate = widget.datetime!;
@@ -54,6 +71,25 @@ class ReminderScreenState extends State<ReminderScreen> {
         DateTime.parse(selectedCalendarDate.toString().substring(0, 10))
             .toString()
             .replaceAll("000", "00Z"));
+  }
+
+  bool isPaused = false;
+  bool isDenied = true;
+
+  showSnackbar() {
+    Permission.notification.isDenied.then((value) async {
+      isDenied = value;
+      setState(() {});
+      if (value) {
+        await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()!
+            .requestPermission();
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      }
+    });
   }
 
   @override

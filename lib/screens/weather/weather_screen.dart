@@ -82,20 +82,6 @@ class WeatherScreenState extends State<WeatherScreen>
       isDenied = true;
       setState(() {});
     }
-    // Permission.notification.isDenied.then((value) async {
-    //   isDenied = value;
-    //   setState(() {});
-    //   if (value) {
-    //     await flutterLocalNotificationsPlugin
-    //         .resolvePlatformSpecificImplementation<
-    //             AndroidFlutterLocalNotificationsPlugin>()!
-    //         .requestPermission();
-    //   } else {
-    //     if (context.mounted) {
-    //       context.read<WeatherBloc>().getWeather();
-    //     }
-    //   }
-    // });
   }
 
   final locationNameController = TextEditingController();
