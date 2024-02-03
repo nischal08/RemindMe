@@ -72,10 +72,8 @@ class AlertBottomSheet {
       isDismissible: isDismissible,
       enableDrag: enableDrag,
       context: context,
-      builder: (bContext) => WillPopScope(
-        onWillPop: () async {
-          return Future.value(false);
-        },
+      builder: (bContext) => PopScope(
+        canPop: false,
         child: SingleChildScrollView(
           child: Stack(
             clipBehavior: Clip.none,

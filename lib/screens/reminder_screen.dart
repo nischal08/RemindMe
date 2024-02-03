@@ -8,8 +8,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:remind_me/bloc/events/reminder_event.dart';
 import 'package:remind_me/bloc/reminder_bloc.dart';
 import 'package:remind_me/data/image_constants.dart';
+import 'package:remind_me/utils/notification.dart';
 import 'package:remind_me/data/response/app_response.dart';
-import 'package:remind_me/main.dart';
 import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/styles/styles.dart';
@@ -81,7 +81,7 @@ class ReminderScreenState extends State<ReminderScreen> {
       isDenied = value;
       setState(() {});
       if (value) {
-        await flutterLocalNotificationsPlugin
+        await NotificationUtil.flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()!
             .requestPermission();

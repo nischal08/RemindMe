@@ -131,7 +131,7 @@ class NewsItem extends StatelessWidget {
         Expanded(
           flex: 4,
           child: CachedNetworkImage(
-            imageUrl: articles.urlToImage!,
+            imageUrl: articles.urlToImage.toString(),
             imageBuilder: (context, imageProvider) {
               return Container(
                 height: 80.h,

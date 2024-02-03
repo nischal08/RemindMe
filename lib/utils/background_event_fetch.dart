@@ -1,6 +1,6 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:remind_me/main.dart';
+import 'package:remind_me/utils/notification.dart';
 import 'package:remind_me/models/reminder_model.dart';
 import 'package:remind_me/repository/database_repository.dart';
 
@@ -40,7 +40,7 @@ class BackgroundEventFetch {
           listData[i].month == todayConvertedDate.month &&
           listData[i].year == todayConvertedDate.year)) {
         for (ReminderModel reminder in newRemindersList[listData[i]]!) {
-          await flutterLocalNotificationsPlugin.show(
+          await NotificationUtil.flutterLocalNotificationsPlugin.show(
             i,
             reminder.title,
             reminder.descp,

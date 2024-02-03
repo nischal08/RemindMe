@@ -1,11 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:remind_me/data/image_constants.dart';
-import 'package:remind_me/main.dart';
+import 'package:remind_me/utils/notification.dart';
 import 'package:remind_me/styles/app_colors.dart';
 import 'package:remind_me/widgets/alert_bottom_sheet.dart';
 
@@ -22,7 +21,7 @@ class PermissionHandler {
       if (value) {
         isDenied = value;
         //  await Permission.notification.request();
-        await flutterLocalNotificationsPlugin
+        await NotificationUtil.flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()!
             .requestPermission();

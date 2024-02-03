@@ -62,7 +62,7 @@ class Days {
     required this.precip,
     required this.precipprob,
     required this.precipcover,
-    required this.preciptype,
+    // required this.preciptype,
     required this.snow,
     required this.snowdepth,
     required this.windgust,
@@ -97,7 +97,7 @@ class Days {
   late final double? precip;
   late final double? precipprob;
   late final double? precipcover;
-  late final List<String> preciptype;
+  // late final List<String> preciptype;
   late final double? snow;
   late final double? snowdepth;
   late final double? windgust;
@@ -133,7 +133,7 @@ class Days {
     precip = json['precip'];
     precipprob = json['precipprob'];
     precipcover = json['precipcover'];
-    preciptype = List.castFrom<dynamic, String>(json['preciptype']);
+    // preciptype = List.castFrom<dynamic, String>(json['preciptype']);
     snow = json['snow'];
     snowdepth = json['snowdepth'];
     windgust = json['windgust'];
@@ -171,7 +171,7 @@ class Days {
     data['precip'] = precip;
     data['precipprob'] = precipprob;
     data['precipcover'] = precipcover;
-    data['preciptype'] = preciptype;
+    // data['preciptype'] = preciptype;
     data['snow'] = snow;
     data['snowdepth'] = snowdepth;
     data['windgust'] = windgust;
